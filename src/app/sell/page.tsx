@@ -4,6 +4,8 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { createProduct } from "../actions/product"
+import { motion } from "framer-motion"
+import toast from "react-hot-toast"
 
 export default function SellPage() {
   const { data: session, status } = useSession()
@@ -15,7 +17,11 @@ export default function SellPage() {
   if (!session) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
-        <div className="bg-white p-8 rounded-xl shadow-sm text-center max-w-md w-full">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-white p-8 rounded-xl shadow-sm text-center max-w-md w-full"
+        >
           <h2 className="text-xl font-bold mb-4">Please log in to sell</h2>
           <p className="text-gray-600 mb-6">You must be logged in to list products on the marketplace.</p>
           <button 
@@ -24,7 +30,7 @@ export default function SellPage() {
           >
             Go Home
           </button>
-        </div>
+        </motion.div>
       </div>
     )
   }
@@ -33,14 +39,26 @@ export default function SellPage() {
     e.preventDefault()
     setLoading(true)
     const formData = new FormData(e.currentTarget)
+    
+    // We can show a loading toast if we wanted, but let's just use success/error
+    const promise = createProduct(formData)
+    
+    toast.promise(promise, {
+      loading: 'Creating your listing...',
+      success: 'Product listed successfully! 🎉',
+      error: 'Failed to list product.',
+    })
+
     try {
-      const res = await createProduct(formData)
+      const res = await promise
       if (res.success) {
-        router.push("/products")
+        // slight delay before routing to allow user to read the toast
+        setTimeout(() => {
+          router.push("/products")
+        }, 1000)
       }
     } catch (error) {
       console.error(error)
-      alert("Failed to list product")
     } finally {
       setLoading(false)
     }
@@ -48,7 +66,12 @@ export default function SellPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex justify-center">
-      <div className="max-w-2xl w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 260, damping: 20 }}
+        className="max-w-2xl w-full bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
+      >
         <div className="px-8 py-6 border-b border-gray-100 bg-white">
           <h1 className="text-2xl font-bold text-gray-900">List an Item</h1>
           <p className="text-sm text-gray-500 mt-1">Provide details about the item you want to sell.</p>
@@ -131,23 +154,27 @@ export default function SellPage() {
           </div>
 
           <div className="pt-4 flex justify-end gap-3">
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               type="button"
               onClick={() => router.back()}
               className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 font-medium transition-colors"
             >
               Cancel
-            </button>
-            <button 
+            </motion.button>
+            <motion.button 
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
               className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium transition-colors disabled:opacity-50 flex items-center justify-center min-w-[120px]"
             >
               {loading ? "Listing..." : "List Product"}
-            </button>
+            </motion.button>
           </div>
         </form>
-      </div>
+      </motion.div>
     </div>
   )
 }
