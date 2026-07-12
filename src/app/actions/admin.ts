@@ -18,13 +18,15 @@ export async function getAdminOrders() {
   return await prisma.order.findMany({
     orderBy: { createdAt: "desc" },
     include: {
-      product: { select: { title: true, price: true, images: true } },
-      buyer: { select: { name: true, email: true, phoneNumber: true } },
-      product: {
-        include: {
+      product: { 
+        select: { 
+          title: true, 
+          price: true, 
+          images: true,
           seller: { select: { name: true, email: true, phoneNumber: true } }
-        }
-      }
+        } 
+      },
+      buyer: { select: { name: true, email: true, phoneNumber: true } }
     }
   })
 }
