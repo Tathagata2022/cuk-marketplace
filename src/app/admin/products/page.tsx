@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { deleteProduct, updateProductPrice } from "../../actions/product"
+import Link from "next/link"
 
 export default function AdminProducts() {
   const [products, setProducts] = useState<any[]>([])
@@ -57,7 +58,18 @@ export default function AdminProducts() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Manage Products</h1>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <h1 className="text-2xl font-bold">Manage Products</h1>
+        <Link 
+          href="/sell" 
+          className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl font-bold shadow-sm transition-colors flex items-center gap-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+          </svg>
+          Add New Product
+        </Link>
+      </div>
       
       <div className="bg-white rounded shadow overflow-x-auto">
         <table className="w-full text-left">
@@ -74,7 +86,9 @@ export default function AdminProducts() {
           <tbody className="text-sm">
             {products.map(product => (
               <tr key={product.id} className="border-b border-gray-100">
-                <td className="p-4 font-mono text-xs text-gray-500">{product.id}</td>
+                <td className="p-4 font-mono text-xs font-bold text-gray-700 bg-gray-50">
+                  PRD-{product.id.split('-')[0].toUpperCase()}
+                </td>
                 <td className="p-4 font-medium">{product.title}</td>
                 <td className="p-4">{product.seller.name || product.seller.email}</td>
                 <td className="p-4 font-bold">₹{product.price}</td>

@@ -44,6 +44,7 @@ export default function AdminOrders() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Buyer</th>
@@ -55,12 +56,15 @@ export default function AdminOrders() {
               <tbody className="bg-white divide-y divide-gray-200">
                 {orders.map(order => (
                   <tr key={order.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-700 bg-gray-50 border-r border-gray-100">
+                      ORD-{order.id.split('-')[0].toUpperCase()}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {new Date(order.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">{order.product.title}</div>
-                      <div className="text-sm text-gray-500">₹{order.product.price}</div>
+                      <div className="text-xs font-mono text-gray-500">PRD-{order.product.id.split('-')[0].toUpperCase()}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">{order.buyer.name}</div>
