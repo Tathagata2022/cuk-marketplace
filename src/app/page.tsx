@@ -19,69 +19,96 @@ export default async function Home() {
   const products = await getProducts()
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      
-      {/* Main Content Area */}
-      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+    <div className="min-h-screen flex flex-col relative bg-[#f8f9fa] overflow-hidden">
+      {/* Animated Mesh Background */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-yellow-300/30 blur-[80px] animate-blob"></div>
+        <div className="absolute top-[20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-green-300/20 blur-[100px] animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-[-20%] left-[10%] w-[60%] h-[60%] rounded-full bg-blue-200/20 blur-[120px] animate-blob animation-delay-4000"></div>
+      </div>
+
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Navbar />
         
-        {/* Banner Section */}
-        <div className="mb-8 rounded-2xl overflow-hidden bg-gradient-to-r from-yellow-400 to-yellow-300 p-6 sm:p-10 shadow-sm relative">
-          <div className="relative z-10 max-w-lg">
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2 leading-tight">
-              CUK Essentials,<br/>Delivered Fast.
-            </h1>
-            <p className="text-gray-800 text-sm sm:text-base font-medium mb-6">
-              Buy and sell directly with students on campus. Zero delivery fees, infinite convenience.
-            </p>
-            <Link 
-              href="/sell"
-              className="inline-block bg-green-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-green-700 transition-colors shadow-md"
-            >
-              Start Selling Now
-            </Link>
+        {/* Main Content Area */}
+        <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+          
+          {/* Hero Banner Section (Glassmorphic) */}
+          <div className="mb-12 rounded-[2rem] overflow-hidden glass-card p-8 sm:p-12 relative flex items-center min-h-[300px]">
+            <div className="relative z-10 max-w-xl">
+              <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight leading-[1.1]">
+                Your Campus <br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-yellow-500">Marketplace</span>
+              </h1>
+              <p className="text-gray-600 text-base sm:text-lg font-medium mb-8 leading-relaxed max-w-md">
+                Buy, sell, and trade directly with students on campus. Zero delivery fees, infinite convenience.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link 
+                  href="/sell"
+                  className="inline-flex items-center justify-center bg-gray-900 text-white font-semibold px-8 py-4 rounded-2xl hover:bg-gray-800 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-gray-900/20"
+                >
+                  Start Selling
+                </Link>
+                <Link 
+                  href="#trending"
+                  className="inline-flex items-center justify-center bg-white/50 backdrop-blur-md text-gray-900 font-semibold px-8 py-4 rounded-2xl hover:bg-white/80 transition-all border border-gray-200 shadow-sm"
+                >
+                  Browse Items
+                </Link>
+              </div>
+            </div>
+            {/* Minimal abstract graphic */}
+            <div className="hidden lg:block absolute right-12 top-1/2 transform -translate-y-1/2">
+              <div className="relative w-64 h-64">
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/40 to-green-500/40 rounded-3xl backdrop-blur-xl border border-white/50 shadow-2xl transform rotate-12 transition-transform hover:rotate-6 duration-500"></div>
+                <div className="absolute inset-4 bg-white/60 rounded-2xl backdrop-blur-md border border-white/80 shadow-inner transform -rotate-6 transition-transform hover:rotate-0 duration-500 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-gray-900/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
           </div>
-          {/* Decorative graphic */}
-          <div className="absolute right-0 bottom-0 opacity-20 sm:opacity-100 transform translate-x-1/4 translate-y-1/4 pointer-events-none">
-             <svg width="200" height="200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-        </div>
 
-        {/* Categories / Filters (Visual) */}
-        <div className="flex gap-4 overflow-x-auto pb-4 mb-6 scrollbar-hide">
-          {['All Items', 'Electronics', 'Books', 'Furniture', 'Cycles', 'Other'].map((cat, i) => (
-            <button key={cat} className={`flex-shrink-0 px-5 py-2 rounded-xl text-sm font-bold transition-colors ${i === 0 ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'}`}>
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        <div className="flex justify-between items-end mb-4">
-          <h2 className="text-xl font-bold text-gray-900 tracking-tight">Trending near you</h2>
-        </div>
-
-        {products.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-xl border border-gray-100 shadow-sm animate-in fade-in duration-500">
-            <h3 className="text-xl font-medium text-gray-900 mb-2">No products available</h3>
-            <p className="text-gray-500 mb-6">Be the first to list an item on the campus marketplace!</p>
-            <Link 
-              href="/sell"
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-medium transition-colors hover:shadow-md"
-            >
-              Start Selling
-            </Link>
-          </div>
-        ) : (
-          <AnimatedGridContainer>
-            {products.map((product: any) => (
-              <AnimatedProductCard key={product.id} product={product} />
+          {/* Categories / Filters (Glassmorphic) */}
+          <div className="flex gap-3 overflow-x-auto pb-6 mb-8 scrollbar-hide snap-x">
+            {['All Items', 'Textbooks', 'Electronics', 'Dorm', 'Jobs', 'Other'].map((cat, i) => (
+              <button key={cat} className={`snap-center flex-shrink-0 px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${i === 0 ? 'bg-gray-900 text-white shadow-lg shadow-gray-900/20' : 'glass hover:bg-white/90 text-gray-700 hover:shadow-md'}`}>
+                {cat}
+              </button>
             ))}
-          </AnimatedGridContainer>
-        )}
-      </main>
+          </div>
+
+          <div id="trending" className="flex justify-between items-end mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Trending near you</h2>
+          </div>
+
+          {products.length === 0 ? (
+            <div className="text-center py-24 glass-card rounded-[2rem] border border-white">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">No products available</h3>
+              <p className="text-gray-500 mb-8 max-w-sm mx-auto">The marketplace is currently empty. Be the first to list an item and reach hundreds of students!</p>
+              <Link 
+                href="/sell"
+                className="inline-flex bg-gray-900 text-white px-8 py-3 rounded-xl font-semibold transition-transform hover:scale-105 shadow-lg"
+              >
+                List an Item
+              </Link>
+            </div>
+          ) : (
+            <AnimatedGridContainer>
+              {products.map((product: any) => (
+                <AnimatedProductCard key={product.id} product={product} />
+              ))}
+            </AnimatedGridContainer>
+          )}
+        </main>
+      </div>
     </div>
   )
 }
