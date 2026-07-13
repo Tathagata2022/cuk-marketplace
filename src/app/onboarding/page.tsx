@@ -62,9 +62,9 @@ export default function OnboardingPage() {
         transition={{ type: "spring", stiffness: 260, damping: 20 }}
         className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden"
       >
-        <div className="px-8 py-6 bg-blue-600 text-white text-center">
-          <h1 className="text-2xl font-bold">Complete Your Profile</h1>
-          <p className="text-sm text-blue-100 mt-2">Just a few more details to join the marketplace.</p>
+        <div className="px-8 py-6 bg-yellow-400 text-gray-900 text-center">
+          <h1 className="text-2xl font-extrabold">Complete Your Profile</h1>
+          <p className="text-sm font-medium text-gray-800 mt-2">Just a few more details to join the marketplace.</p>
         </div>
         
         <form onSubmit={handleSubmit} className="px-8 py-6 space-y-5">
@@ -130,7 +130,7 @@ export default function OnboardingPage() {
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-bold transition-colors disabled:opacity-50"
+              className="w-full py-3 bg-green-600 text-white rounded-md hover:bg-green-700 font-bold transition-colors disabled:opacity-50"
             >
               {loading ? "Saving..." : "Start Exploring"}
             </motion.button>

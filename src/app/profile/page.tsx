@@ -5,6 +5,7 @@ import { redirect } from "next/navigation"
 import Link from "next/link"
 import AnimatedGridContainer from "@/components/AnimatedGridContainer"
 import AnimatedProductCard from "@/components/AnimatedProductCard"
+import Navbar from "@/components/Navbar"
 
 export const dynamic = "force-dynamic"
 
@@ -37,14 +38,7 @@ export default async function ProfileDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-12">
-      <header className="bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-4 flex justify-between items-center shadow-sm sticky top-0 z-50">
-        <Link href="/" className="text-2xl font-bold tracking-tight text-blue-600 hover:text-blue-700 transition-colors">
-          Campus Marketplace
-        </Link>
-        <Link href="/products" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-          Back to Browse
-        </Link>
-      </header>
+      <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-10">
@@ -53,7 +47,7 @@ export default async function ProfileDashboard() {
               {session.user.image ? (
                 <img src={session.user.image} alt={session.user.name || "User"} className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-blue-100 text-blue-600 text-3xl font-bold">
+                <div className="w-full h-full flex items-center justify-center bg-yellow-100 text-yellow-600 text-3xl font-bold">
                   {session.user.name?.charAt(0) || "U"}
                 </div>
               )}
@@ -64,9 +58,9 @@ export default async function ProfileDashboard() {
               {/* @ts-ignore */}
               <div className="mt-2 flex gap-3 text-sm text-gray-600">
                 {/* @ts-ignore */}
-                <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full font-medium">{session.user.department}</span>
+                <span className="bg-yellow-50 text-yellow-700 px-3 py-1 rounded-full font-bold">{session.user.department}</span>
                 {/* @ts-ignore */}
-                <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-medium">{session.user.phoneNumber}</span>
+                <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">{session.user.phoneNumber}</span>
               </div>
             </div>
           </div>
@@ -75,7 +69,7 @@ export default async function ProfileDashboard() {
         <div className="space-y-12">
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
               </svg>
               My Listings

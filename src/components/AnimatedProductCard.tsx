@@ -2,44 +2,75 @@
 
 import { motion, Variants } from "framer-motion"
 import Link from "next/link"
+import { useState } from "react"
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+  hidden: { opacity: 0, scale: 0.95 },
+  show: { opacity: 1, scale: 1, transition: { type: "tween", duration: 0.2 } }
 }
 
 export default function AnimatedProductCard({ product }: { product: any }) {
+  const [isHovered, setIsHovered] = useState(false)
+
   return (
-    <motion.div variants={itemVariants} whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)" }} className="h-full">
-      <Link href={`/products/${product.id}`} className="group flex flex-col h-full bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all">
-        <div className="relative aspect-square w-full bg-gray-100 overflow-hidden">
+    <motion.div 
+      variants={itemVariants} 
+      className="h-full bg-white rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.08)] border border-gray-100/50 hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-shadow duration-200"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <Link href={`/products/${product.id}`} className="flex flex-col h-full overflow-hidden">
+        
+        {/* Image Section */}
+        <div className="relative aspect-[4/3] w-full bg-[#f8f9fa] p-4 flex items-center justify-center">
           <img 
-            src={product.images} 
+            src={product.images || 'https://via.placeholder.com/300x300?text=No+Image'} 
             alt={product.title} 
-            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+            className={`object-contain w-full h-full transition-transform duration-300 ${isHovered ? 'scale-105' : 'scale-100'}`}
           />
-          <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-semibold text-gray-700 uppercase tracking-wider">
+          {/* Discount / Category Tag */}
+          <div className="absolute top-0 left-0 bg-blue-50 text-blue-600 px-2 py-0.5 rounded-br-lg text-[10px] font-bold uppercase tracking-wide">
             {product.category}
           </div>
         </div>
-        <div className="p-4 flex flex-col flex-grow">
-          <h3 className="font-semibold text-gray-900 truncate mb-1" title={product.title}>
+
+        {/* Content Section */}
+        <div className="p-3 flex flex-col flex-grow">
+          {/* Delivery time simulation */}
+          <div className="flex items-center gap-1 text-[10px] font-bold text-gray-500 bg-gray-100 w-fit px-1.5 py-0.5 rounded mb-1">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+            </svg>
+            10 MINS
+          </div>
+
+          <h3 className="text-[13px] font-semibold text-gray-800 leading-tight line-clamp-2 mb-1" title={product.title}>
             {product.title}
           </h3>
-          <p className="text-xl font-bold text-gray-900 mb-2">₹{product.price.toLocaleString('en-IN')}</p>
           
-          <div className="mt-auto flex items-center pt-3 border-t border-gray-50">
-            <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold mr-2 overflow-hidden">
-              {product.seller.image ? (
-                <img src={product.seller.image} alt="Seller" className="w-full h-full object-cover" />
-              ) : (
-                product.seller.name?.charAt(0) || "U"
-              )}
+          <p className="text-[11px] text-gray-500 mb-2 truncate">
+            {product.condition} • {product.seller.name}
+          </p>
+          
+          <div className="mt-auto flex items-end justify-between">
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-400 line-through">₹{Math.floor(product.price * 1.2)}</span>
+              <span className="text-[15px] font-extrabold text-gray-900 leading-none">
+                ₹{product.price.toLocaleString('en-IN')}
+              </span>
             </div>
-            <span className="text-xs text-gray-500 truncate">{product.seller.name}</span>
-            <span className="ml-auto text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded">
-              {product.condition}
-            </span>
+            
+            {/* Blinkit Style ADD Button */}
+            <button 
+              onClick={(e) => {
+                e.preventDefault()
+                // In a real app, this would add to cart or open order modal
+                window.location.href = `/products/${product.id}`
+              }}
+              className="bg-green-50 text-green-700 border border-green-600 px-4 py-1.5 rounded-lg text-xs font-extrabold hover:bg-green-600 hover:text-white transition-colors"
+            >
+              ADD
+            </button>
           </div>
         </div>
       </Link>

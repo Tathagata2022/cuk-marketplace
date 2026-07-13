@@ -7,6 +7,8 @@ import { createProduct } from "../actions/product"
 import { motion } from "framer-motion"
 import toast from "react-hot-toast"
 
+import Navbar from "@/components/Navbar"
+
 export default function SellPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -26,7 +28,7 @@ export default function SellPage() {
           <p className="text-gray-600 mb-6">You must be logged in to list products on the marketplace.</p>
           <button 
             onClick={() => router.push("/")}
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+            className="w-full bg-green-600 text-white font-bold py-2 rounded-md hover:bg-green-700"
           >
             Go Home
           </button>
@@ -54,7 +56,7 @@ export default function SellPage() {
       if (res.success) {
         // slight delay before routing to allow user to read the toast
         setTimeout(() => {
-          router.push("/products")
+          router.push("/")
         }, 1000)
       }
     } catch (error) {
@@ -65,29 +67,31 @@ export default function SellPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex justify-center">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 260, damping: 20 }}
-        className="max-w-2xl w-full bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
-      >
-        <div className="px-8 py-6 border-b border-gray-100 bg-white">
-          <h1 className="text-2xl font-bold text-gray-900">List an Item</h1>
-          <p className="text-sm text-gray-500 mt-1">Provide details about the item you want to sell.</p>
-        </div>
-        
-        <form onSubmit={handleSubmit} className="px-8 py-6 space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-            <input 
-              name="title"
-              required 
-              type="text" 
-              placeholder="E.g. iPhone 13 Pro Max"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
-            />
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <Navbar />
+      <div className="flex-grow py-12 px-4 sm:px-6 lg:px-8 flex justify-center">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 260, damping: 20 }}
+          className="max-w-2xl w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+        >
+          <div className="px-8 py-6 border-b border-yellow-500 bg-yellow-400 text-gray-900">
+            <h1 className="text-2xl font-extrabold text-gray-900">List an Item</h1>
+            <p className="text-sm font-medium text-gray-800 mt-1">Provide details about the item you want to sell.</p>
           </div>
+          
+          <form onSubmit={handleSubmit} className="px-8 py-6 space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+              <input 
+                name="title"
+                required 
+                type="text" 
+                placeholder="E.g. iPhone 13 Pro Max"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-shadow"
+              />
+            </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
@@ -96,7 +100,7 @@ export default function SellPage() {
               required 
               rows={4}
               placeholder="Describe the condition, age, and reason for selling..."
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-shadow"
             />
           </div>
 
@@ -109,7 +113,7 @@ export default function SellPage() {
                 type="number" 
                 min="0"
                 placeholder="0.00"
-                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-shadow"
               />
             </div>
             <div>
@@ -117,7 +121,7 @@ export default function SellPage() {
               <select 
                 name="category"
                 required
-                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none bg-white"
               >
                 <option value="Electronics">Electronics</option>
                 <option value="Books">Books</option>
@@ -133,7 +137,7 @@ export default function SellPage() {
             <select 
               name="condition"
               required
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none bg-white"
             >
               <option value="Like New">Like New</option>
               <option value="Good">Good</option>
@@ -148,7 +152,7 @@ export default function SellPage() {
               name="imageUrl"
               type="url" 
               placeholder="https://..."
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-shadow"
             />
             <p className="text-xs text-gray-500 mt-1">Leave blank to use a default placeholder image.</p>
           </div>
@@ -168,7 +172,7 @@ export default function SellPage() {
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium transition-colors disabled:opacity-50 flex items-center justify-center min-w-[120px]"
+              className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 font-bold transition-colors disabled:opacity-50 flex items-center justify-center min-w-[120px]"
             >
               {loading ? "Listing..." : "List Product"}
             </motion.button>
