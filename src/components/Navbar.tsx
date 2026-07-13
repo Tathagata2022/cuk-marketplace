@@ -91,15 +91,17 @@ export default function Navbar() {
                       Sell an Item
                     </Link>
                     
-                    {/* Always show Admin link so they can navigate to it */}
-                    <Link 
-                      onClick={() => setMenuOpen(false)} 
-                      href={session?.user && (session.user as any).role === "ADMIN" ? "/admin" : "/admin/login"} 
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-bold border-b border-gray-100 text-red-600"
-                    >
-                      {/* @ts-ignore */}
-                      {session?.user?.role === "ADMIN" ? "Admin Dashboard" : "Admin Login"}
-                    </Link>
+                    {/* Only show Admin link if they are actually an ADMIN */}
+                    {/* @ts-ignore */}
+                    {session?.user?.role === "ADMIN" && (
+                      <Link 
+                        onClick={() => setMenuOpen(false)} 
+                        href="/admin" 
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-bold border-b border-gray-100 text-red-600"
+                      >
+                        Admin Dashboard
+                      </Link>
+                    )}
                     
                     <div className="border-t border-gray-50 mt-2 pt-2">
                       <button 
