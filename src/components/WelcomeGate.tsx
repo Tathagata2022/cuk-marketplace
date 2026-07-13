@@ -26,12 +26,12 @@ export default function WelcomeGate() {
           animate={{ opacity: 1, y: 0 }}
           className="max-w-md w-full bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 sm:p-12 text-center"
         >
-          <div className="mb-8">
-            <div className="text-4xl font-extrabold tracking-tight mb-2"><span className="text-yellow-500">CUK</span> <span className="text-green-600">Marketplace</span></div>
-            <p className="text-gray-500 font-medium">Your exclusive campus commerce platform.</p>
+          <div className="mb-6 sm:mb-8">
+            <div className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2"><span className="text-yellow-500">CUK</span> <span className="text-green-600">Marketplace</span></div>
+            <p className="text-sm sm:text-base text-gray-500 font-medium">Your exclusive campus commerce platform.</p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {/* Log In Button */}
             <motion.button 
               whileHover={{ scale: 1.02 }}

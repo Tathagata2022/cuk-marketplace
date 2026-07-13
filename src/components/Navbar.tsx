@@ -42,7 +42,7 @@ export default function Navbar() {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             <Link 
               href="/sell" 
               className="hidden sm:flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-extrabold px-6 py-2.5 rounded-full shadow-sm border-2 border-yellow-500 transition-colors"
@@ -54,18 +54,18 @@ export default function Navbar() {
             </Link>
 
             {status === "loading" ? (
-              <div className="w-10 h-10 bg-gray-100 rounded-full animate-pulse" />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-full animate-pulse" />
             ) : session ? (
               <div className="relative">
                 <button 
                   onClick={() => setMenuOpen(!menuOpen)}
-                  className="flex items-center gap-2 hover:bg-gray-50 p-2 rounded-lg transition-colors"
+                  className="flex items-center gap-2 hover:bg-gray-50 p-1 sm:p-2 rounded-lg transition-colors"
                 >
                   <div className="text-left hidden sm:block">
                     <div className="text-xs text-gray-500">My Account</div>
                     <div className="text-sm font-bold text-gray-800 truncate max-w-[100px]">{session.user?.name?.split(' ')[0]}</div>
                   </div>
-                  <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 border border-gray-200 flex-shrink-0">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-gray-100 border border-gray-200 flex-shrink-0">
                     {session.user?.image ? (
                       <img src={session.user.image} alt="Profile" className="w-full h-full object-cover" />
                     ) : (
@@ -87,15 +87,16 @@ export default function Navbar() {
                     <Link onClick={() => setMenuOpen(false)} href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-medium">
                       My Dashboard
                     </Link>
-                    <Link onClick={() => setMenuOpen(false)} href="/sell" className="block px-4 py-2 text-sm text-green-600 hover:bg-green-50 font-bold">
+                    <Link onClick={() => setMenuOpen(false)} href="/sell" className="block sm:hidden px-4 py-2 text-sm text-green-600 hover:bg-green-50 font-bold">
                       Sell an Item
                     </Link>
-                    {/* @ts-ignore */}
-                    {session.user?.role === "ADMIN" && (
-                      <Link onClick={() => setMenuOpen(false)} href="/admin" className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-bold">
-                        Admin Portal
-                      </Link>
-                    )}
+                    
+                    {/* Always show Admin link so they can navigate to it */}
+                    <Link onClick={() => setMenuOpen(false)} href="/admin/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-bold border-b border-gray-100 text-red-600">
+                      {/* @ts-ignore */}
+                      {session?.user?.role === "ADMIN" ? "Admin Dashboard" : "Admin Login"}
+                    </Link>
+                    
                     <div className="border-t border-gray-50 mt-2 pt-2">
                       <button 
                         onClick={() => signOut()}
@@ -119,12 +120,12 @@ export default function Navbar() {
             {/* Cart Button (Visual) */}
             <Link 
               href="/profile"
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg text-sm font-bold transition-colors flex items-center gap-2 shadow-sm"
+              className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 sm:px-4 sm:py-3 rounded-lg text-sm font-bold transition-colors flex items-center gap-2 shadow-sm"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
-              My Items
+              <span className="hidden sm:inline">My Items</span>
             </Link>
           </div>
         </div>
