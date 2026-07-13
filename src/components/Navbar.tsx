@@ -23,7 +23,7 @@ export default function Navbar() {
             </Link>
             
             <div className="hidden md:flex flex-col border-l border-gray-300 pl-6">
-              <span className="text-xs font-bold text-gray-800 tracking-wide uppercase">Delivery in 10 minutes</span>
+              <span className="text-xs font-bold text-gray-800 tracking-wide uppercase">University Campus</span>
               <span className="text-sm text-gray-500 font-medium truncate max-w-[200px]">Central University of Kerala</span>
             </div>
           </div>

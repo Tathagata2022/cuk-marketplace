@@ -38,13 +38,6 @@ export default function AnimatedProductCard({ product }: { product: any }) {
 
         {/* Content Section */}
         <div className="p-5 flex flex-col flex-grow">
-          {/* Delivery time simulation */}
-          <div className="flex items-center gap-1.5 text-[11px] font-bold text-gray-500 mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-500" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-            </svg>
-            10 MINS
-          </div>
 
           <h3 className="text-[15px] font-bold text-gray-900 leading-tight line-clamp-2 mb-1 group-hover:text-green-700 transition-colors" title={product.title}>
             {product.title}
