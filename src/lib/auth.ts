@@ -17,9 +17,18 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token }) {
       if (token.email) {
-        const dbUser = await prisma.user.findUnique({
+        let dbUser = await prisma.user.findUnique({
           where: { email: token.email }
         })
+
+        // Auto-assign ADMIN role to specific email
+        if (dbUser && dbUser.email === 'tathagatamandal68@gmail.com' && dbUser.role !== 'ADMIN') {
+          dbUser = await prisma.user.update({
+            where: { email: dbUser.email },
+            data: { role: 'ADMIN' }
+          })
+        }
+
         if (dbUser) {
           token.id = dbUser.id
           // @ts-ignore
