@@ -92,7 +92,11 @@ export default function Navbar() {
                     </Link>
                     
                     {/* Always show Admin link so they can navigate to it */}
-                    <Link onClick={() => setMenuOpen(false)} href="/admin/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-bold border-b border-gray-100 text-red-600">
+                    <Link 
+                      onClick={() => setMenuOpen(false)} 
+                      href={session?.user && (session.user as any).role === "ADMIN" ? "/admin" : "/admin/login"} 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-bold border-b border-gray-100 text-red-600"
+                    >
                       {/* @ts-ignore */}
                       {session?.user?.role === "ADMIN" ? "Admin Dashboard" : "Admin Login"}
                     </Link>

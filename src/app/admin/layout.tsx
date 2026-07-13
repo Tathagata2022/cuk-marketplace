@@ -13,6 +13,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   // Do not show the sidebar if on the login page itself
   if (pathname === "/admin/login") {
+    // @ts-ignore
+    if (session?.user?.role === "ADMIN") {
+      router.replace("/admin")
+      return null
+    }
     return <>{children}</>
   }
 
