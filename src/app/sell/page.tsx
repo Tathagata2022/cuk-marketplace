@@ -180,5 +180,6 @@ export default function SellPage() {
         </form>
       </motion.div>
     </div>
+    </div>
   )
 }
