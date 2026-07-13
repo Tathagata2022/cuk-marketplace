@@ -11,6 +11,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (status === "loading") return <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">Loading Admin...</div>
 
+  // Do not show the sidebar if on the login page itself
+  if (pathname === "/admin/login") {
+    return <>{children}</>
+  }
+
   // @ts-ignore
   if (!session || session.user.role !== "ADMIN") {
     // Only redirect if we aren't already on the login page
@@ -18,11 +23,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       router.replace("/admin/login")
     }
     return null
-  }
-
-  // Do not show the sidebar if on the login page itself
-  if (pathname === "/admin/login") {
-    return <>{children}</>
   }
 
   return (
