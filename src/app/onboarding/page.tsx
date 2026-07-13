@@ -44,7 +44,7 @@ export default function OnboardingPage() {
         // Force session update so the guard sees the new data
         await update()
         setTimeout(() => {
-          router.push("/products")
+          router.push("/")
         }, 1500)
       }
     } catch (error) {
