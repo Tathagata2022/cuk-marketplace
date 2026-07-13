@@ -92,18 +92,20 @@ export default function OnboardingPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Course</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Course *</label>
               <input 
                 name="course"
+                required
                 type="text" 
                 placeholder="e.g. B.Tech"
                 className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Semester</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Semester *</label>
               <input 
                 name="semester"
+                required
                 type="number" 
                 min="1"
                 max="10"

@@ -16,7 +16,7 @@ export default function Navbar() {
           {/* Logo & Location */}
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center gap-2">
-              <div className="text-3xl font-extrabold text-yellow-400 tracking-tight">campus<span className="text-green-600">it</span></div>
+              <div className="text-3xl font-extrabold tracking-tight"><span className="text-yellow-500">CUK</span> <span className="text-green-600">Marketplace</span></div>
             </Link>
             
             <div className="hidden md:flex flex-col border-l border-gray-200 pl-6">
@@ -43,7 +43,19 @@ export default function Navbar() {
 
           {/* Actions */}
           <div className="flex items-center gap-4">
-            {session ? (
+            <Link 
+              href="/sell" 
+              className="hidden sm:flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-extrabold px-6 py-2.5 rounded-full shadow-sm border-2 border-yellow-500 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+              </svg>
+              SELL
+            </Link>
+
+            {status === "loading" ? (
+              <div className="w-10 h-10 bg-gray-100 rounded-full animate-pulse" />
+            ) : session ? (
               <div className="relative">
                 <button 
                   onClick={() => setMenuOpen(!menuOpen)}

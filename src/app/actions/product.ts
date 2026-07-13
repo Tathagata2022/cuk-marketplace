@@ -53,18 +53,81 @@ export async function getProductById(id: string) {
 
 export async function expressInterest(productId: string) {
   const session = await getServerSession(authOptions)
-  
-  if (!session || !session.user || !(session.user as any).id) {
-    throw new Error("Unauthorized")
+  if (!session?.user) return { success: false, error: "Not logged in" }
+
+  // @ts-ignore
+  const userId = session.user.id
+
+  try {
+    await prisma.order.create({
+      data: {
+        productId,
+        buyerId: userId,
+        status: "INTERESTED"
+      }
+    })
+    return { success: true }
+  } catch (e) {
+    return { success: false, error: "Failed" }
+  }
+}
+
+export async function payForProduct(productId: string) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user) return { success: false, error: "Not logged in" }
+
+  // @ts-ignore
+  const userId = session.user.id
+
+  try {
+    await prisma.order.create({
+      data: {
+        productId,
+        buyerId: userId,
+        status: "PAID"
+      }
+    })
+    return { success: true }
+  } catch (e) {
+    return { success: false, error: "Failed" }
+  }
+}
+
+export async function deleteProduct(productId: string) {
+  const session = await getServerSession(authOptions)
+  // Ensure the user is an admin
+  if (!session?.user || (session.user as any).role !== "ADMIN") {
+    return { success: false, error: "Unauthorized" }
   }
 
-  const order = await prisma.order.create({
-    data: {
-      productId,
-      buyerId: (session.user as any).id,
-      status: "INTERESTED",
-    },
-  })
+  try {
+    // Delete associated orders first to satisfy foreign key constraints
+    await prisma.order.deleteMany({
+      where: { productId }
+    })
+    
+    await prisma.product.delete({
+      where: { id: productId }
+    })
+    return { success: true }
+  } catch (e) {
+    return { success: false, error: "Failed to delete product" }
+  }
+}
 
-  return { success: true, orderId: order.id }
+export async function updateProductPrice(productId: string, newPrice: number) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user || (session.user as any).role !== "ADMIN") {
+    return { success: false, error: "Unauthorized" }
+  }
+
+  try {
+    await prisma.product.update({
+      where: { id: productId },
+      data: { price: newPrice }
+    })
+    return { success: true }
+  } catch (e) {
+    return { success: false, error: "Failed to update price" }
+  }
 }

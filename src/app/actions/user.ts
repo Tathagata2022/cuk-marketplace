@@ -16,8 +16,8 @@ export async function updateUserProfile(formData: FormData) {
   const semester = parseInt(formData.get("semester") as string)
   const university = formData.get("university") as string
 
-  if (!phoneNumber || !department) {
-    return { success: false, error: "Phone and Department are required" }
+  if (!phoneNumber || !department || !course || isNaN(semester)) {
+    return { success: false, error: "Phone, Department, Course, and Semester are required" }
   }
 
   try {

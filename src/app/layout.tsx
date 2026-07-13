@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Campus Marketplace",
+  title: "CUK Marketplace",
   description: "A managed marketplace for university students",
 };
 

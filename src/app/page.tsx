@@ -2,11 +2,20 @@ import { getProducts } from "./actions/product"
 import Navbar from "@/components/Navbar"
 import AnimatedGridContainer from "@/components/AnimatedGridContainer"
 import AnimatedProductCard from "@/components/AnimatedProductCard"
+import WelcomeGate from "@/components/WelcomeGate"
 import Link from "next/link"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 
 export const dynamic = "force-dynamic"
 
 export default async function Home() {
+  const session = await getServerSession(authOptions)
+  
+  if (!session) {
+    return <WelcomeGate />
+  }
+
   const products = await getProducts()
 
   return (
@@ -20,7 +29,7 @@ export default async function Home() {
         <div className="mb-8 rounded-2xl overflow-hidden bg-gradient-to-r from-yellow-400 to-yellow-300 p-6 sm:p-10 shadow-sm relative">
           <div className="relative z-10 max-w-lg">
             <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2 leading-tight">
-              Campus Essentials,<br/>Delivered in Minutes.
+              CUK Essentials,<br/>Delivered Fast.
             </h1>
             <p className="text-gray-800 text-sm sm:text-base font-medium mb-6">
               Buy and sell directly with students on campus. Zero delivery fees, infinite convenience.

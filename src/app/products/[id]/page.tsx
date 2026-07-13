@@ -1,7 +1,7 @@
 "use client"
 
 import { use, useState, useEffect } from "react"
-import { getProductById, expressInterest } from "../../actions/product"
+import { getProductById, expressInterest, payForProduct } from "../../actions/product"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import Navbar from "@/components/Navbar"
@@ -12,7 +12,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [product, setProduct] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [actionLoading, setActionLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
+  const [success, setSuccess] = useState<"INTERESTED" | "PAID" | null>(null)
 
   useEffect(() => {
     async function load() {
@@ -31,12 +31,27 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     setActionLoading(true)
     try {
       const res = await expressInterest(resolvedParams.id)
-      if (res.success) {
-        setSuccess(true)
-      }
+      if (res.success) setSuccess("INTERESTED")
     } catch (err) {
       console.error(err)
       alert("Failed to express interest.")
+    } finally {
+      setActionLoading(false)
+    }
+  }
+
+  async function handlePayNow() {
+    if (!session) {
+      alert("Please login to pay")
+      return
+    }
+    setActionLoading(true)
+    try {
+      const res = await payForProduct(resolvedParams.id)
+      if (res.success) setSuccess("PAID")
+    } catch (err) {
+      console.error(err)
+      alert("Payment failed.")
     } finally {
       setActionLoading(false)
     }
@@ -126,20 +141,31 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 </div>
               ) : success ? (
                 <div className="bg-green-50 border border-green-200 text-green-800 p-4 rounded-xl text-center">
-                  <h4 className="font-extrabold mb-1">Interest Registered! 🎉</h4>
-                  <p className="text-xs font-medium">Our admins have been notified and will contact you shortly to coordinate payment and delivery.</p>
+                  <h4 className="font-extrabold mb-1">
+                    {success === "PAID" ? "Payment Successful! 🎉" : "Interest Registered! 🎉"}
+                  </h4>
+                  <p className="text-xs font-medium">Our admins have been notified and will coordinate delivery shortly.</p>
                 </div>
               ) : (
-                <button
-                  onClick={handleExpressInterest}
-                  disabled={actionLoading}
-                  className="w-full bg-green-600 text-white py-4 rounded-xl font-black text-lg hover:bg-green-700 transition-colors shadow-sm disabled:opacity-50 tracking-wide"
-                >
-                  {actionLoading ? "Processing..." : "ADD TO CART"}
-                </button>
+                <div className="space-y-3">
+                  <button
+                    onClick={handleExpressInterest}
+                    disabled={actionLoading}
+                    className="w-full bg-white text-green-600 border-2 border-green-600 py-3 rounded-xl font-bold text-lg hover:bg-green-50 transition-colors disabled:opacity-50 tracking-wide"
+                  >
+                    {actionLoading ? "Processing..." : "WISH TO BUY"}
+                  </button>
+                  <button
+                    onClick={handlePayNow}
+                    disabled={actionLoading}
+                    className="w-full bg-green-600 text-white py-4 rounded-xl font-black text-lg hover:bg-green-700 transition-colors shadow-sm disabled:opacity-50 tracking-wide"
+                  >
+                    {actionLoading ? "Processing..." : "PAY NOW"}
+                  </button>
+                </div>
               )}
               {!isOwner && !success && (
-                <p className="text-center text-[10px] font-bold uppercase text-gray-400 mt-3 flex items-center justify-center gap-1">
+                <p className="text-center text-[10px] font-bold uppercase text-gray-400 mt-4 flex items-center justify-center gap-1">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-green-600" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
