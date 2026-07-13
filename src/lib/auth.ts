@@ -15,11 +15,20 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id
-        // @ts-ignore
-        token.role = user.role
+    async jwt({ token }) {
+      if (token.email) {
+        const dbUser = await prisma.user.findUnique({
+          where: { email: token.email }
+        })
+        if (dbUser) {
+          token.id = dbUser.id
+          // @ts-ignore
+          token.role = dbUser.role
+          // @ts-ignore
+          token.department = dbUser.department
+          // @ts-ignore
+          token.phoneNumber = dbUser.phoneNumber
+        }
       }
       return token
     },
@@ -29,6 +38,10 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id
         // @ts-ignore
         session.user.role = token.role
+        // @ts-ignore
+        session.user.department = token.department
+        // @ts-ignore
+        session.user.phoneNumber = token.phoneNumber
       }
       return session
     },

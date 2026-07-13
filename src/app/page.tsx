@@ -38,17 +38,23 @@ export default function Home() {
         >
           {session ? (
             <div className="flex items-center gap-4">
-              {(session.user as any)?.role === "ADMIN" && (
-                <Link href="/admin" className="text-sm font-semibold text-red-600 hover:text-red-800 transition-colors">
-                  Admin Panel
-                </Link>
-              )}
-              <span className="text-sm text-gray-600 hidden sm:inline-block">Hello, {session.user?.name}</span>
+              <Link href="/profile" className="flex items-center gap-2 group">
+                <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-100 border-2 border-white shadow-sm group-hover:shadow-md transition-shadow">
+                  {session.user?.image ? (
+                    <img src={session.user.image} alt={session.user.name || "User"} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-blue-100 text-blue-600 font-bold text-xs">
+                      {session.user?.name?.charAt(0) || "U"}
+                    </div>
+                  )}
+                </div>
+                <span className="text-sm font-semibold text-gray-700 group-hover:text-blue-600 transition-colors hidden sm:inline-block">My Dashboard</span>
+              </Link>
               <motion.button 
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => signOut()}
-                className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                className="bg-gray-100 hover:bg-red-50 text-gray-800 hover:text-red-600 px-4 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 Sign Out
               </motion.button>
