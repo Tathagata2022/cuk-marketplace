@@ -40,3 +40,54 @@ export async function updateUserProfile(formData: FormData) {
     return { success: false, error: "Failed to update profile" }
   }
 }
+
+export async function deleteUserAccount() {
+  const session = await getServerSession(authOptions)
+  if (!session?.user) {
+    return { success: false, error: "Not authenticated" }
+  }
+  
+  // @ts-ignore
+  const userId = session.user.id
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      // 1. Delete all orders where this user is the buyer
+      await tx.order.deleteMany({
+        where: { buyerId: userId }
+      })
+
+      // 2. Delete all orders on products owned by this user
+      const userProducts = await tx.product.findMany({
+        where: { sellerId: userId },
+        select: { id: true }
+      })
+      const productIds = userProducts.map(p => p.id)
+      
+      if (productIds.length > 0) {
+        await tx.order.deleteMany({
+          where: { productId: { in: productIds } }
+        })
+      }
+
+      // 3. Delete all products owned by this user
+      await tx.product.deleteMany({
+        where: { sellerId: userId }
+      })
+
+      // 4. Delete sessions & accounts (handled by Cascade if set, but manual just in case)
+      await tx.session.deleteMany({ where: { userId } })
+      await tx.account.deleteMany({ where: { userId } })
+
+      // 5. Delete the user
+      await tx.user.delete({
+        where: { id: userId }
+      })
+    })
+
+    return { success: true }
+  } catch (error) {
+    console.error("Error deleting account:", error)
+    return { success: false, error: "Failed to delete account" }
+  }
+}

@@ -6,6 +6,7 @@ import Link from "next/link"
 import AnimatedGridContainer from "@/components/AnimatedGridContainer"
 import AnimatedProductCard from "@/components/AnimatedProductCard"
 import Navbar from "@/components/Navbar"
+import DeleteAccountButton from "@/components/DeleteAccountButton"
 
 export const dynamic = "force-dynamic"
 
@@ -106,6 +107,8 @@ export default async function ProfileDashboard() {
               </AnimatedGridContainer>
             )}
           </section>
+
+          <DeleteAccountButton />
         </div>
       </main>
     </div>
