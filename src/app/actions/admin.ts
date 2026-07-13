@@ -20,6 +20,7 @@ export async function getAdminOrders() {
     include: {
       product: { 
         select: { 
+          id: true,
           title: true, 
           price: true, 
           images: true,
