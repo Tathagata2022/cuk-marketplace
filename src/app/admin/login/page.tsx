@@ -1,10 +1,14 @@
 "use client"
 
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 
 export default function AdminLogin() {
+  const { data: session, status } = useSession()
+
+  const isUnauthorized = status === "authenticated" && session?.user && (session.user as any).role !== "ADMIN"
+
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4">
       <Link href="/" className="absolute top-8 left-8 text-gray-400 hover:text-white transition-colors flex items-center gap-2">
@@ -29,17 +33,24 @@ export default function AdminLogin() {
           <h1 className="text-3xl font-bold text-white mb-2">Admin Portal</h1>
           <p className="text-gray-400 mb-8">Secure access strictly restricted to authorized administrators.</p>
 
-          <motion.button 
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => signIn("google", { callbackUrl: "/admin" })}
-            className="w-full bg-white text-gray-900 py-4 rounded-xl hover:bg-gray-100 transition-colors shadow-lg font-bold flex items-center justify-center gap-3 text-lg"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.761H12.545z"/>
-            </svg>
-            Sign in as Admin
-          </motion.button>
+          {isUnauthorized ? (
+            <div className="w-full bg-red-500/10 border border-red-500/50 rounded-xl p-4 mb-2 animate-pulse">
+              <p className="text-red-500 font-bold mb-1">Access Denied</p>
+              <p className="text-red-400 text-sm">Your account does not have administrator privileges.</p>
+            </div>
+          ) : (
+            <motion.button 
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => signIn("google", { callbackUrl: "/admin" })}
+              className="w-full bg-white text-gray-900 py-4 rounded-xl hover:bg-gray-100 transition-colors shadow-lg font-bold flex items-center justify-center gap-3 text-lg"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.761H12.545z"/>
+              </svg>
+              Sign in as Admin
+            </motion.button>
+          )}
         </div>
         <div className="bg-gray-900 px-8 py-4 text-center text-xs text-gray-500 border-t border-gray-700">
           Unauthorized access attempts are logged.
