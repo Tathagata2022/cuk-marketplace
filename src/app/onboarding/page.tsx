@@ -1,6 +1,6 @@
 "use client"
 
-import { useSession } from "next-auth/react"
+import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { updateUserProfile } from "../actions/user"
@@ -62,9 +62,9 @@ export default function OnboardingPage() {
         transition={{ type: "spring", stiffness: 260, damping: 20 }}
         className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden"
       >
-        <div className="px-8 py-6 bg-yellow-400 text-gray-900 text-center">
-          <h1 className="text-2xl font-extrabold">Complete Your Profile</h1>
-          <p className="text-sm font-medium text-gray-800 mt-2">Just a few more details to join the marketplace.</p>
+        <div className="px-8 py-8 bg-blue-50 border-b border-blue-100 text-center">
+          <h1 className="text-2xl font-black text-gray-900 tracking-tight">Complete Your Profile</h1>
+          <p className="text-sm font-medium text-gray-500 mt-2">Just a few more details to join the marketplace.</p>
         </div>
         
         <form onSubmit={handleSubmit} className="px-8 py-6 space-y-5">
@@ -126,16 +126,24 @@ export default function OnboardingPage() {
             />
           </div>
 
-          <div className="pt-4">
+          <div className="pt-4 space-y-3">
             <motion.button 
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-green-600 text-white rounded-md hover:bg-green-700 font-bold transition-colors disabled:opacity-50"
+              className="w-full py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 shadow-sm font-bold transition-colors disabled:opacity-50"
             >
               {loading ? "Saving..." : "Start Exploring"}
             </motion.button>
+            <button
+              type="button"
+              onClick={() => signOut({ callbackUrl: "/" })}
+              disabled={loading}
+              className="w-full py-3 bg-white border border-gray-200 text-gray-600 rounded-xl hover:bg-gray-50 hover:text-gray-900 font-bold transition-colors"
+            >
+              Return Back
+            </button>
           </div>
         </form>
       </motion.div>
