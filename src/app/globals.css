@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fcfcfc;
+  --foreground: #111827; /* Tailwind gray-900 */
 }
 
 @theme inline {
-  --background: #000000;
-  --foreground: #ffffff;
-  --neon-green: #39FF14;
-  --neon-yellow: #FFFF00;
-  --card-bg: rgba(20, 20, 20, 0.6);
-  --card-border: rgba(255, 255, 255, 0.08);
+  --background: #fcfcfc;
+  --foreground: #111827;
+  --accent-primary: #2563eb; /* Tailwind blue-600 */
+  --accent-secondary: #10b981; /* Tailwind emerald-500 */
+  --card-bg: #ffffff;
+  --card-border: rgba(0, 0, 0, 0.05);
 }
 
 body {
@@ -23,49 +23,38 @@ body {
 }
 
 @layer utilities {
-  .dark-glass {
+  .clean-glass {
     background: var(--card-bg);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
     border: 1px solid var(--card-border);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
   }
 
-  .neon-glow-green {
-    box-shadow: 0 0 20px rgba(57, 255, 20, 0.15), inset 0 0 10px rgba(57, 255, 20, 0.05);
+  .clean-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
   }
 
-  .neon-glow-yellow {
-    box-shadow: 0 0 20px rgba(255, 255, 0, 0.15), inset 0 0 10px rgba(255, 255, 0, 0.05);
-  }
-
-  .text-neon-green {
-    color: var(--neon-green);
-    text-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
-  }
-
-  .text-neon-yellow {
-    color: var(--neon-yellow);
-    text-shadow: 0 0 15px rgba(255, 255, 0, 0.4);
-  }
-
-  .bg-grid-pattern {
-    background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-                      linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
+  .text-gradient-primary {
+    background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
   }
 }
 
-/* Custom scrollbar for dark mode */
+/* Custom soft scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: #f3f4f6;
 }
 ::-webkit-scrollbar-thumb {
-  background: #333333;
+  background: #d1d5db;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #555555;
+  background: #9ca3af;
 }

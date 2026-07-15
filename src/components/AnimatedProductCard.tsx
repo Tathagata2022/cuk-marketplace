@@ -2,74 +2,114 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
-import Image from "next/image"
+import { useState } from "react"
 
 export default function AnimatedProductCard({ product }: { product: any }) {
+  const [isHovered, setIsHovered] = useState(false)
+
   return (
     <motion.div
-      whileHover={{ y: -8, scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="group relative h-full flex flex-col"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      whileHover={{ y: -5 }}
+      transition={{ duration: 0.3 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      className="relative group h-full"
     >
       <Link href={`/products/${product.id}`} className="block h-full">
-        <div className="dark-glass rounded-2xl overflow-hidden h-full flex flex-col relative">
+        <div className="clean-card rounded-[24px] overflow-hidden flex flex-col h-full bg-white transition-all duration-300 group-hover:shadow-xl">
           
-          {/* Subtle glowing border effect on hover */}
-          <div className="absolute inset-0 border-[2px] border-neon-green/0 group-hover:border-neon-green/50 rounded-2xl transition-all duration-300 z-20 pointer-events-none"></div>
-          
-          {/* Top Image Section */}
-          <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#111111]">
-            <img 
-              src={product.images || `https://ui-avatars.com/api/?name=${encodeURIComponent(product.title)}&background=111111&color=39FF14&size=400`}
-              alt={product.title}
-              className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out opacity-80 group-hover:opacity-100"
-            />
-            {/* Dark overlay at bottom of image for text readability */}
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black to-transparent"></div>
-          </div>
-          
-          {/* Content Section */}
-          <div className="p-4 sm:p-5 flex flex-col flex-grow relative z-10 -mt-8">
-            <div className="flex justify-between items-start mb-2">
-              <h3 className="text-base sm:text-lg font-black text-white line-clamp-1 group-hover:text-neon-green transition-colors drop-shadow-md">
-                {product.title}
-              </h3>
+          {/* Image Container */}
+          <div className="relative aspect-[4/3] bg-gray-50 overflow-hidden border-b border-gray-100">
+            {product.images ? (
+              <img
+                src={product.images}
+                alt={product.title}
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+            ) : (
+              <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-gray-50 gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span className="text-xs font-semibold uppercase tracking-wider">No Image</span>
+              </div>
+            )}
+            
+            {/* Condition Badge */}
+            <div className="absolute top-4 left-4 z-10">
+              <span className="bg-white/90 backdrop-blur-md border border-gray-200 text-gray-800 text-[10px] font-bold px-3 py-1.5 rounded-full shadow-sm">
+                {product.condition}
+              </span>
             </div>
-            
-            <p className="text-xl sm:text-2xl font-black text-neon-yellow mb-4 tracking-tight drop-shadow-md">
-              ₹{product.price.toLocaleString()}
-            </p>
-            
-            <div className="mt-auto flex items-center justify-between">
-              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-[#1a1a1a] text-gray-400 border border-white/5 uppercase tracking-wider">
+
+            {/* View Details Overlay */}
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
+              className="absolute bottom-4 right-4 z-10"
+            >
+              <div className="bg-blue-600 text-white font-bold px-4 py-2 rounded-full shadow-lg shadow-blue-600/30 flex items-center gap-1">
+                <span className="text-sm">View</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Content */}
+          <div className="p-5 flex flex-col flex-grow">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[11px] font-bold text-blue-600 uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded-md">
                 {product.category}
               </span>
+              <span className="text-[11px] font-medium text-gray-400">
+                {new Date(product.createdAt).toLocaleDateString()}
+              </span>
+            </div>
+            
+            <h3 className="font-bold text-gray-900 text-lg leading-tight mb-2 line-clamp-1 group-hover:text-blue-600 transition-colors">
+              {product.title}
+            </h3>
+            
+            <p className="text-sm text-gray-500 line-clamp-2 mb-4 flex-grow font-medium">
+              {product.description}
+            </p>
+            
+            <div className="flex items-end justify-between mt-auto pt-4 border-t border-gray-100">
+              <div>
+                <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5">Price</p>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-xl font-black text-gray-900 leading-none">
+                    ₹{product.price.toLocaleString('en-IN')}
+                  </span>
+                </div>
+              </div>
               
-              <div className="flex items-center gap-1.5 opacity-60">
-                <div className={`w-2 h-2 rounded-full ${
-                  product.condition === 'Like New' ? 'bg-neon-green shadow-[0_0_8px_rgba(57,255,20,0.8)]' : 
-                  product.condition === 'Good' ? 'bg-neon-yellow shadow-[0_0_8px_rgba(255,255,0,0.8)]' : 
-                  'bg-orange-500'
-                }`}></div>
-                <span className="text-[10px] sm:text-xs font-bold text-gray-500 uppercase tracking-wider">{product.condition}</span>
+              <div className="flex items-center gap-2">
+                <div className="text-right">
+                  <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5">Seller</p>
+                  <p className="text-xs font-bold text-gray-700 truncate max-w-[80px]">
+                    {product.seller.name?.split(' ')[0]}
+                  </p>
+                </div>
+                <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-100 border border-gray-200">
+                  {product.seller.image ? (
+                    <img src={product.seller.image} alt={product.seller.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-xs font-bold text-gray-500">
+                      {product.seller.name?.charAt(0) || "U"}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-          
-          {/* "View Details" overlay on hover */}
-          <div className="absolute top-4 right-4 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 z-30">
-            <div className="bg-neon-green text-black w-8 h-8 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(57,255,20,0.4)]">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
-            </div>
-          </div>
-
         </div>
       </Link>
-      
-      {/* Hover Glow Effect */}
-      <div className={`absolute -inset-0.5 bg-gradient-to-r from-green-400 to-yellow-400 rounded-[1.7rem] blur opacity-0 group-hover:opacity-20 transition duration-500 -z-10`}></div>
     </motion.div>
   )
 }

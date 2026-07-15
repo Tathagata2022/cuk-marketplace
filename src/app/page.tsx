@@ -1,121 +1,115 @@
-import { getProducts } from "./actions/product"
+import prisma from "@/lib/db"
 import Navbar from "@/components/Navbar"
-import AnimatedGridContainer from "@/components/AnimatedGridContainer"
-import AnimatedProductCard from "@/components/AnimatedProductCard"
 import WelcomeGate from "@/components/WelcomeGate"
-import Link from "next/link"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import AnimatedProductCard from "@/components/AnimatedProductCard"
 
-export const dynamic = "force-dynamic"
-
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
   const session = await getServerSession(authOptions)
   
   if (!session) {
     return <WelcomeGate />
   }
 
-  const products = await getProducts()
+  const params = await searchParams
+  const currentCategory = params.category || "All"
+
+  const whereClause = currentCategory !== "All" ? { category: currentCategory } : {}
+  const products = await prisma.product.findMany({
+    where: whereClause,
+    orderBy: { createdAt: "desc" },
+    include: { seller: true }
+  })
+
+  const categories = ["All", "Electronics", "Textbooks", "Dorm", "Cycles", "Other"]
 
   return (
-    <div className="min-h-screen bg-black flex flex-col relative overflow-hidden text-white">
-      
-      {/* Dark Mode Background Elements */}
-      <div className="fixed inset-0 z-0 bg-grid-pattern pointer-events-none opacity-20"></div>
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] rounded-full bg-neon-green/5 blur-[120px]"></div>
-        <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full bg-neon-yellow/5 blur-[150px]"></div>
-      </div>
+    <div className="min-h-screen bg-[#fcfcfc] flex flex-col relative text-gray-900">
+      <Navbar />
 
-      <div className="relative z-10 flex flex-col min-h-screen">
-        <Navbar />
-
-        <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 w-full">
+      <main className="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        {/* Hero Section */}
+        <div className="relative bg-white rounded-[2.5rem] p-8 sm:p-12 mb-12 border border-gray-100 shadow-sm overflow-hidden text-center">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-emerald-400"></div>
           
-          {/* Hero Banner Section (Midnight Neon) */}
-          <div className="mb-10 sm:mb-16 rounded-[2rem] overflow-hidden dark-glass p-8 sm:p-14 relative flex items-center min-h-[250px] sm:min-h-[350px] group border border-white/10 shadow-2xl">
-            {/* Spotlight Glow */}
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-green/20 to-neon-yellow/20 rounded-[2rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10"></div>
-            
-            <div className="relative z-10 max-w-2xl">
-              <span className="inline-block py-1.5 px-4 rounded-full bg-[#1a1a1a] border border-white/10 text-[10px] sm:text-xs font-black text-neon-yellow tracking-widest uppercase mb-4 sm:mb-6 shadow-sm">
-                Next-Gen Campus Commerce
-              </span>
-              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white mb-4 sm:mb-6 leading-[1.1] tracking-tight">
-                Premium Goods.<br/>
-                <span className="text-neon-green">Traded Instantly.</span>
-              </h1>
-              <p className="text-base sm:text-xl text-gray-400 font-medium max-w-xl leading-relaxed mb-8">
-                The most advanced marketplace for CUK students. Secure, fast, and exclusively for you.
-              </p>
-              
-              <div className="flex flex-wrap gap-4">
-                <Link 
-                  href="/sell"
-                  className="inline-flex items-center justify-center bg-neon-green text-black font-black px-8 py-4 rounded-2xl hover:bg-neon-yellow transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(57,255,20,0.3)]"
-                >
-                  Start Selling
-                </Link>
-                <Link 
-                  href="#trending"
-                  className="inline-flex items-center justify-center bg-[#111111] text-white font-bold px-8 py-4 rounded-2xl hover:bg-[#1a1a1a] hover:border-white/20 transition-all border border-white/10 shadow-sm"
-                >
-                  Browse Items
-                </Link>
-              </div>
+          <div className="relative z-10">
+            <div className="inline-block bg-blue-50 border border-blue-100 text-blue-600 px-4 py-1.5 rounded-full mb-6 text-xs font-bold uppercase tracking-widest">
+              v2.0 Now Live
             </div>
-            
-            {/* Minimal abstract graphic */}
-            <div className="hidden lg:block absolute right-12 top-1/2 transform -translate-y-1/2 opacity-30 group-hover:opacity-60 transition-opacity duration-700 pointer-events-none">
-              <div className="relative w-64 h-64">
-                <div className="absolute inset-0 border-[4px] border-neon-green/20 rounded-[3rem] transform rotate-12 transition-transform group-hover:rotate-6 duration-1000"></div>
-                <div className="absolute inset-4 border-[2px] border-neon-yellow/30 rounded-[2rem] transform -rotate-6 transition-transform group-hover:rotate-0 duration-1000"></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Categories / Filters */}
-          <div className="flex gap-3 overflow-x-auto pb-6 mb-8 scrollbar-hide snap-x">
-            {['All Items', 'Textbooks', 'Electronics', 'Dorm', 'Jobs', 'Other'].map((cat, i) => (
-              <button key={cat} className={`snap-center flex-shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${i === 0 ? 'bg-neon-green text-black shadow-[0_0_15px_rgba(57,255,20,0.3)]' : 'bg-[#111111] hover:bg-[#1a1a1a] text-gray-400 hover:text-white border border-white/5 hover:border-white/20'}`}>
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          <div id="trending" className="flex justify-between items-end mb-8">
-            <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
-              <span className="w-2 h-8 bg-neon-yellow rounded-full"></span>
-              Trending near you
-            </h2>
-          </div>
-
-          {products.length === 0 ? (
-            <div className="text-center py-24 dark-glass rounded-[2rem]">
-              <div className="w-16 h-16 bg-[#111111] rounded-full flex items-center justify-center mx-auto mb-4 border border-white/10">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight mb-4 leading-tight">
+              Curated Marketplace: <br className="hidden sm:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-emerald-500">Discover Unique Goods.</span>
+            </h1>
+            <p className="text-lg sm:text-xl text-gray-500 font-medium max-w-2xl mx-auto mb-8">
+              The exclusive platform for students to buy, sell, and trade safely on campus.
+            </p>
+            <div className="flex justify-center">
+              <a href="#feed" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-md shadow-blue-600/20 hover:shadow-lg transition-all hover:-translate-y-0.5 flex items-center gap-2">
+                Explore Collections
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">No products available</h3>
-              <p className="text-gray-500 mb-8 max-w-sm mx-auto">The marketplace is currently empty. Be the first to list an item and reach hundreds of students!</p>
-              <Link 
-                href="/sell"
-                className="inline-flex bg-neon-green text-black px-8 py-3 rounded-xl font-black transition-transform hover:scale-105 shadow-[0_0_15px_rgba(57,255,20,0.2)]"
-              >
-                List an Item
-              </Link>
+              </a>
             </div>
-          ) : (
-            <AnimatedGridContainer>
-              {products.map((product: any) => (
-                <AnimatedProductCard key={product.id} product={product} />
-              ))}
-            </AnimatedGridContainer>
-          )}
-        </main>
-      </div>
+          </div>
+        </div>
+
+        {/* Categories & Feed */}
+        <div id="feed" className="flex flex-col lg:flex-row gap-8">
+          
+          {/* Sidebar */}
+          <div className="lg:w-64 flex-shrink-0">
+            <div className="sticky top-28">
+              <h2 className="text-sm font-bold text-gray-900 mb-4 px-2 uppercase tracking-widest">Featured Categories</h2>
+              <div className="flex lg:flex-col gap-2 overflow-x-auto pb-4 lg:pb-0 hide-scrollbar">
+                {categories.map(cat => (
+                  <a 
+                    key={cat} 
+                    href={`/?category=${cat}`}
+                    className={`whitespace-nowrap px-4 py-3 rounded-xl font-bold transition-all text-sm flex items-center gap-3 ${
+                      currentCategory === cat 
+                        ? 'bg-blue-50 text-blue-700 shadow-sm border border-blue-100' 
+                        : 'text-gray-600 hover:bg-gray-100 border border-transparent'
+                    }`}
+                  >
+                    {cat}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Grid */}
+          <div className="flex-1">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-black text-gray-900">
+                {currentCategory === "All" ? "Latest Arrivals" : `${currentCategory} Collection`}
+              </h2>
+              <span className="text-sm font-bold text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{products.length} Items</span>
+            </div>
+
+            {products.length === 0 ? (
+              <div className="bg-white border border-gray-100 rounded-[2rem] p-12 text-center shadow-sm">
+                <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">No products found</h3>
+                <p className="text-gray-500">There are currently no listings in this category.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                {products.map(product => (
+                  <AnimatedProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            )}
+          </div>
+
+        </div>
+      </main>
     </div>
   )
 }
