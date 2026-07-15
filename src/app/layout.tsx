@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 import { Toaster } from "react-hot-toast";
 import OnboardingGuard from "@/components/OnboardingGuard";
+import PWARegister from "@/components/PWARegister";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Providers>
+          <PWARegister />
           <OnboardingGuard />
           {children}
           <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
