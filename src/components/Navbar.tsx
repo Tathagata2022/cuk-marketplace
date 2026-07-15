@@ -31,7 +31,10 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-6 lg:gap-8">
               <Link href="/" className="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">Feed</Link>
               <Link href="/profile" className="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">Profile</Link>
-              
+              {/* @ts-ignore */}
+              {session.user?.role === "ADMIN" && (
+                <Link href="/admin" className="text-sm font-bold text-emerald-600 hover:text-emerald-700 transition-colors bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100">Admin Area</Link>
+              )}
               <Link href="/sell" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full text-sm font-bold transition-all shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 flex items-center gap-2 transform hover:-translate-y-0.5">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -138,6 +141,19 @@ export default function Navbar() {
                   </svg>
                   Profile
                 </Link>
+                {/* @ts-ignore */}
+                {session.user?.role === "ADMIN" && (
+                  <Link 
+                    href="/admin" 
+                    onClick={() => setMenuOpen(false)}
+                    className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-emerald-50 border border-emerald-100 font-bold text-emerald-700 hover:bg-emerald-100 transition-colors col-span-2"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    Admin Dashboard
+                  </Link>
+                )}
               </div>
 
               <Link 
