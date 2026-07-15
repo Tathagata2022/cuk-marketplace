@@ -58,27 +58,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
         {/* Categories & Feed */}
         <div id="feed" className="flex flex-col lg:flex-row gap-8">
           
-          {/* Sidebar */}
-          <div className="lg:w-64 flex-shrink-0">
-            <div className="sticky top-28">
-              <h2 className="text-sm font-bold text-gray-900 mb-4 px-2 uppercase tracking-widest">Featured Categories</h2>
-              <div className="flex lg:flex-col gap-2 overflow-x-auto pb-4 lg:pb-0 hide-scrollbar">
-                {categories.map(cat => (
-                  <a 
-                    key={cat} 
-                    href={`/?category=${cat}`}
-                    className={`whitespace-nowrap px-4 py-3 rounded-xl font-bold transition-all text-sm flex items-center gap-3 ${
-                      currentCategory === cat 
-                        ? 'bg-blue-50 text-blue-700 shadow-sm border border-blue-100' 
-                        : 'text-gray-600 hover:bg-gray-100 border border-transparent'
-                    }`}
-                  >
-                    {cat}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
+
 
           {/* Grid */}
           <div className="flex-1">

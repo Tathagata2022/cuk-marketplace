@@ -22,7 +22,7 @@ export default function Navbar() {
               </svg>
             </div>
             <span className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight group-hover:text-blue-600 transition-colors">
-              SYNERGY
+              CUK Marketplace
             </span>
           </Link>
 
