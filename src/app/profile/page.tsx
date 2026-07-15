@@ -7,6 +7,8 @@ import AnimatedGridContainer from "@/components/AnimatedGridContainer"
 import AnimatedProductCard from "@/components/AnimatedProductCard"
 import Navbar from "@/components/Navbar"
 import DeleteAccountButton from "@/components/DeleteAccountButton"
+import DeleteListingButton from "@/components/DeleteListingButton"
+import RemoveInterestButton from "@/components/RemoveInterestButton"
 
 export const dynamic = "force-dynamic"
 
@@ -114,7 +116,11 @@ export default async function ProfileDashboard() {
               ) : (
                 <AnimatedGridContainer>
                   {myListings.map(product => (
-                    <AnimatedProductCard key={product.id} product={product} />
+                    <AnimatedProductCard 
+                      key={product.id} 
+                      product={product} 
+                      actionButton={<DeleteListingButton productId={product.id} />}
+                    />
                   ))}
                 </AnimatedGridContainer>
               )}
@@ -137,7 +143,11 @@ export default async function ProfileDashboard() {
               ) : (
                 <AnimatedGridContainer>
                   {myOrders.map(order => (
-                    <AnimatedProductCard key={order.product.id} product={order.product} />
+                    <AnimatedProductCard 
+                      key={order.product.id} 
+                      product={order.product} 
+                      actionButton={<RemoveInterestButton orderId={order.id} />}
+                    />
                   ))}
                 </AnimatedGridContainer>
               )}

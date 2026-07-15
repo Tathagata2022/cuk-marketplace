@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { useState } from "react"
 
-export default function AnimatedProductCard({ product }: { product: any }) {
+export default function AnimatedProductCard({ product, actionButton }: { product: any, actionButton?: React.ReactNode }) {
   const [isHovered, setIsHovered] = useState(false)
 
   return (
@@ -19,7 +19,7 @@ export default function AnimatedProductCard({ product }: { product: any }) {
       className="relative group h-full"
     >
       <Link href={`/products/${product.id}`} className="block h-full">
-        <div className="clean-card rounded-[24px] overflow-hidden flex flex-col h-full bg-white transition-all duration-300 group-hover:shadow-xl">
+        <div className="clean-card rounded-[24px] overflow-hidden flex flex-col h-full bg-white transition-all duration-300 group-hover:shadow-xl relative">
           
           {/* Image Container */}
           <div className="relative aspect-[4/3] bg-gray-50 overflow-hidden border-b border-gray-100">
@@ -44,6 +44,13 @@ export default function AnimatedProductCard({ product }: { product: any }) {
                 {product.condition}
               </span>
             </div>
+
+            {/* Action Button (Delete/Remove Interest) */}
+            {actionButton && (
+              <div className="absolute top-4 right-4 z-20" onClick={(e) => e.preventDefault()}>
+                {actionButton}
+              </div>
+            )}
 
             {/* View Details Overlay */}
             <motion.div 

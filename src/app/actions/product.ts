@@ -131,3 +131,67 @@ export async function updateProductPrice(productId: string, newPrice: number) {
     return { success: false, error: "Failed to update price" }
   }
 }
+
+export async function deleteMyProduct(productId: string) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user) {
+    return { success: false, error: "Unauthorized" }
+  }
+  
+  // @ts-ignore
+  const userId = session.user.id
+
+  const product = await prisma.product.findUnique({
+    where: { id: productId }
+  })
+
+  if (!product || product.sellerId !== userId) {
+    return { success: false, error: "Unauthorized or not found" }
+  }
+
+  try {
+    // Delete associated orders first
+    await prisma.order.deleteMany({
+      where: { productId }
+    })
+    
+    await prisma.product.delete({
+      where: { id: productId }
+    })
+    
+    revalidatePath("/profile")
+    revalidatePath("/")
+    return { success: true }
+  } catch (e) {
+    return { success: false, error: "Failed to delete product" }
+  }
+}
+
+export async function removeInterest(orderId: string) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user) {
+    return { success: false, error: "Unauthorized" }
+  }
+
+  // @ts-ignore
+  const userId = session.user.id
+
+  const order = await prisma.order.findUnique({
+    where: { id: orderId }
+  })
+
+  if (!order || order.buyerId !== userId) {
+    return { success: false, error: "Unauthorized or not found" }
+  }
+
+  try {
+    await prisma.order.delete({
+      where: { id: orderId }
+    })
+    
+    revalidatePath("/profile")
+    return { success: true }
+  } catch (e) {
+    return { success: false, error: "Failed to remove interest" }
+  }
+}
