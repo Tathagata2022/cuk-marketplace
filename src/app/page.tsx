@@ -1,8 +1,8 @@
-import prisma from "@/lib/db"
+import { prisma } from "@/lib/prisma"
 import Navbar from "@/components/Navbar"
 import WelcomeGate from "@/components/WelcomeGate"
-import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 import AnimatedProductCard from "@/components/AnimatedProductCard"
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
