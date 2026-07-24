@@ -39,6 +39,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
   const products = await prisma.product.findMany({
     where: whereClause,
     orderBy: orderByClause,
+    take: 24,
     include: { seller: true }
   })
 

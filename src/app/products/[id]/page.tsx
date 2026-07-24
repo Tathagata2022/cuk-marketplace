@@ -4,6 +4,7 @@ import { use, useState, useEffect } from "react"
 import { getProductById, expressInterest, payForProduct, getRelatedProducts } from "../../actions/product"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
+import Image from "next/image"
 import Navbar from "@/components/Navbar"
 import AnimatedProductCard from "@/components/AnimatedProductCard"
 
@@ -125,11 +126,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             <div className="md:w-1/2 bg-gray-50 p-4 sm:p-10 min-h-[300px] sm:min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden group border-b md:border-b-0 md:border-r border-gray-100">
               {imagesArray.length > 0 ? (
                 <>
-                  <div className="w-full flex-grow flex items-center justify-center relative mb-4">
-                    <img
+                  <div className="w-full flex-grow flex items-center justify-center relative mb-4 h-[300px] sm:h-[400px]">
+                    <Image
                       src={imagesArray[currentImgIndex]}
                       alt={product.title}
-                      className="w-full h-full object-contain max-h-[400px] transition-transform duration-700 group-hover:scale-105"
+                      fill
+                      priority
+                      className="object-contain transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
                   {imagesArray.length > 1 && (
@@ -138,9 +141,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                         <button
                           key={idx}
                           onClick={() => setCurrentImgIndex(idx)}
-                          className={`w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${currentImgIndex === idx ? 'border-blue-600 opacity-100 shadow-md scale-105' : 'border-transparent opacity-50 hover:opacity-100'}`}
+                          className={`relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${currentImgIndex === idx ? 'border-blue-600 opacity-100 shadow-md scale-105' : 'border-transparent opacity-50 hover:opacity-100'}`}
                         >
-                          <img src={img} className="w-full h-full object-cover" />
+                          <Image src={img} alt="Thumbnail" fill className="object-cover" />
                         </button>
                       ))}
                     </div>
