@@ -44,6 +44,20 @@ export async function getProducts() {
   })
 }
 
+export async function getRelatedProducts(category: string, excludeId: string) {
+  const products = await prisma.product.findMany({
+    where: { 
+      status: "PUBLISHED",
+      category,
+      id: { not: excludeId }
+    },
+    orderBy: { createdAt: "desc" },
+    take: 3,
+    include: { seller: true }
+  })
+  return products
+}
+
 export async function getProductById(id: string) {
   return await prisma.product.findUnique({
     where: { id },

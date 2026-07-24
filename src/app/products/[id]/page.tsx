@@ -1,15 +1,17 @@
 "use client"
 
 import { use, useState, useEffect } from "react"
-import { getProductById, expressInterest, payForProduct } from "../../actions/product"
+import { getProductById, expressInterest, payForProduct, getRelatedProducts } from "../../actions/product"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import Navbar from "@/components/Navbar"
+import AnimatedProductCard from "@/components/AnimatedProductCard"
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params)
   const { data: session } = useSession()
   const [product, setProduct] = useState<any>(null)
+  const [relatedProducts, setRelatedProducts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [actionLoading, setActionLoading] = useState(false)
   const [success, setSuccess] = useState<"INTERESTED" | "PAID" | null>(null)
@@ -31,7 +33,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   useEffect(() => {
     async function load() {
       const data = await getProductById(resolvedParams.id)
-      setProduct(data)
+      if (data) {
+        setProduct(data)
+        const related = await getRelatedProducts(data.category, data.id)
+        setRelatedProducts(related)
+      }
       setLoading(false)
     }
     load()
@@ -158,6 +164,18 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 <span className="text-xs font-bold text-gray-500 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-full">
                   Listed {new Date(product.createdAt).toLocaleDateString()}
                 </span>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href)
+                    alert("Link copied to clipboard!")
+                  }}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1.5 rounded-full text-xs font-bold transition-colors flex items-center gap-1.5 ml-auto"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+                  </svg>
+                  Share
+                </button>
               </div>
 
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-6 leading-[1.1] tracking-tight flex flex-wrap items-center gap-3">
@@ -240,6 +258,23 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </div>
             </div>
           </div>
+
+          {relatedProducts.length > 0 && (
+            <div className="mt-16">
+              <h2 className="text-2xl font-black text-gray-900 mb-6 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                Similar Items You Might Like
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {relatedProducts.map(p => (
+                  <AnimatedProductCard key={p.id} product={p} />
+                ))}
+              </div>
+            </div>
+          )}
+
         </main>
       </div>
     </div>
