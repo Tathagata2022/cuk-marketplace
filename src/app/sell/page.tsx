@@ -50,7 +50,8 @@ export default function SellPage() {
     
     if (validFiles.length > 0) {
       try {
-        const uploadPromises = validFiles.map(async (file) => {
+        const urls: string[] = [];
+        for (const file of validFiles) {
           const imgFormData = new FormData();
           imgFormData.append("image", file);
           
@@ -60,18 +61,26 @@ export default function SellPage() {
           });
           
           const data = await res.json();
-          if (!data.success) throw new Error("Upload failed");
-          return data.data.url;
-        });
+          if (!data.success) {
+            console.error("ImgBB Error:", data);
+            throw new Error(data.error?.message || "Upload failed for one image");
+          }
+          urls.push(data.data.url);
+          // Wait 500ms between uploads to prevent rate limiting
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
         
-        const urls = await Promise.all(uploadPromises);
         formData.set("imageUrl", JSON.stringify(urls));
-      } catch (error) {
-        toast.error("Error uploading images");
+      } catch (error: any) {
+        toast.error(`Image upload error: ${error.message}`);
         setLoading(false);
         return;
       }
     }
+    
+    // CRITICAL: Delete the actual image files from the form data so we don't send them to the server action!
+    // Next.js Server Actions have a 1MB payload limit, sending raw images will cause a 413 Payload Too Large error.
+    formData.delete("imageFile");
     
     const promise = createProduct(formData)
     
