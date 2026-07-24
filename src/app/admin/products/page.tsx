@@ -37,6 +37,17 @@ export default function AdminProducts() {
     }
   }
 
+  async function handleDelete(id: string) {
+    if (!confirm("WARNING: Are you sure you want to permanently delete this product? All related orders will be deleted too. This cannot be undone.")) return
+    
+    const res = await deleteProduct(id)
+    if (res.success) {
+      setProducts(products.filter(p => p.id !== id))
+    } else {
+      alert(res.error)
+    }
+  }
+
   async function handleSaveDetails(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
@@ -114,7 +125,7 @@ export default function AdminProducts() {
                   {product.status === "PUBLISHED" ? (
                     <button 
                       onClick={() => handleToggleStatus(product.id, product.status)}
-                      className="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 font-medium"
+                      className="px-3 py-1 bg-amber-100 text-amber-700 rounded hover:bg-amber-200 font-medium"
                     >
                       Revoke
                     </button>
@@ -126,6 +137,12 @@ export default function AdminProducts() {
                       Publish
                     </button>
                   )}
+                  <button 
+                    onClick={() => handleDelete(product.id)}
+                    className="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 font-medium"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
