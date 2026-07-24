@@ -131,19 +131,27 @@ export default function SellPage() {
                     className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-3.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 font-medium appearance-none"
                     style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2em' }}
                   >
-                    <option value="Electronics">Electronics</option>
-                    <option value="Textbooks">Textbooks</option>
-                    <option value="Dorm">Dorm Furniture</option>
-                    <option value="Cycles">Cycles</option>
-                    <option value="Other">Other</option>
+                    <option value="📚 Books & Study Materials">📚 Books & Study Materials</option>
+                    <option value="💻 Electronics">💻 Electronics</option>
+                    <option value="📱 Gadgets & Accessories">📱 Gadgets & Accessories</option>
+                    <option value="🪑 Furniture & Home Essentials">🪑 Furniture & Home Essentials</option>
+                    <option value="🧹 Cleaning & Household Utilities">🧹 Cleaning & Household Utilities</option>
+                    <option value="🥼 Clothing & Academic Essentials">🥼 Clothing & Academic Essentials</option>
+                    <option value="🏍️ 2-Wheelers">🏍️ 2-Wheelers</option>
+                    <option value="🚗 Automobile Accessories">🚗 Automobile Accessories</option>
+                    <option value="🏸 Sports & Fitness">🏸 Sports & Fitness</option>
+                    <option value="🏠 Hostel & Daily Essentials">🏠 Hostel & Daily Essentials</option>
+                    <option value="🎒 Bags & Luggage">🎒 Bags & Luggage</option>
+                    <option value="🎮 Entertainment & Hobbies">🎮 Entertainment & Hobbies</option>
+                    <option value="✨ Other">✨ Other</option>
                   </select>
                 </div>
               </div>
 
               <div className="space-y-2">
                 <label className="block text-xs font-bold text-gray-700 uppercase tracking-widest pl-2">Condition</label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {['Like New', 'Good', 'Fair', 'Poor'].map((cond) => (
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                  {['Brand New', 'Like New', 'Good', 'Fair', 'Poor'].map((cond) => (
                     <label key={cond} className="relative cursor-pointer group">
                       <input type="radio" name="condition" value={cond} className="peer sr-only" required defaultChecked={cond === 'Good'} />
                       <div className="text-center px-2 py-3 rounded-xl bg-gray-50 border border-gray-200 peer-checked:bg-blue-50 peer-checked:border-blue-500 peer-checked:text-blue-700 text-gray-500 font-bold text-sm transition-all shadow-sm">
