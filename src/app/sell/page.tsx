@@ -45,27 +45,29 @@ export default function SellPage() {
     setLoading(true)
     const formData = new FormData(e.currentTarget)
     
-    const imageFile = formData.get("imageFile") as File;
-    if (imageFile && imageFile.size > 0) {
+    const imageFiles = formData.getAll("imageFile") as File[];
+    const validFiles = imageFiles.filter(f => f.size > 0).slice(0, 5);
+    
+    if (validFiles.length > 0) {
       try {
-        const imgFormData = new FormData();
-        imgFormData.append("image", imageFile);
-        
-        const res = await fetch(`https://api.imgbb.com/1/upload?key=e26954b517978c1538c01f4d536983be`, {
-          method: "POST",
-          body: imgFormData
+        const uploadPromises = validFiles.map(async (file) => {
+          const imgFormData = new FormData();
+          imgFormData.append("image", file);
+          
+          const res = await fetch(`https://api.imgbb.com/1/upload?key=e26954b517978c1538c01f4d536983be`, {
+            method: "POST",
+            body: imgFormData
+          });
+          
+          const data = await res.json();
+          if (!data.success) throw new Error("Upload failed");
+          return data.data.url;
         });
         
-        const data = await res.json();
-        if (data.success) {
-          formData.set("imageUrl", data.data.url);
-        } else {
-          toast.error("Image upload failed");
-          setLoading(false);
-          return;
-        }
+        const urls = await Promise.all(uploadPromises);
+        formData.set("imageUrl", JSON.stringify(urls));
       } catch (error) {
-        toast.error("Error uploading image");
+        toast.error("Error uploading images");
         setLoading(false);
         return;
       }
@@ -189,14 +191,15 @@ export default function SellPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-widest pl-2">Product Image</label>
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-widest pl-2">Product Images (Max 5)</label>
                 <input 
                   name="imageFile"
                   type="file" 
                   accept="image/*"
+                  multiple
                   className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 font-medium file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                 />
-                <p className="text-[10px] font-bold text-gray-500 pl-2 pt-1 uppercase">Select an image from your device (Max 32MB)</p>
+                <p className="text-[10px] font-bold text-gray-500 pl-2 pt-1 uppercase">Select up to 5 images (Max 32MB each)</p>
               </div>
 
               <div className="pt-6 flex flex-col-reverse sm:flex-row justify-end gap-4 border-t border-gray-100">

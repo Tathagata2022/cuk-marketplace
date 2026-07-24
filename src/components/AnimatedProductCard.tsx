@@ -7,6 +7,17 @@ import { useState } from "react"
 export default function AnimatedProductCard({ product, actionButton }: { product: any, actionButton?: React.ReactNode }) {
   const [isHovered, setIsHovered] = useState(false)
 
+  let displayImage = product.images;
+  try {
+    if (product.images && product.images.startsWith('[')) {
+      const parsed = JSON.parse(product.images);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        displayImage = parsed[0];
+      }
+    }
+  } catch(e) {}
+
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -23,9 +34,9 @@ export default function AnimatedProductCard({ product, actionButton }: { product
           
           {/* Image Container */}
           <div className="relative aspect-[4/3] bg-gray-50 overflow-hidden border-b border-gray-100">
-            {product.images ? (
+            {displayImage ? (
               <img
-                src={product.images}
+                src={displayImage}
                 alt={product.title}
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />

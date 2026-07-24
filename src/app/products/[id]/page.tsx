@@ -13,6 +13,20 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [loading, setLoading] = useState(true)
   const [actionLoading, setActionLoading] = useState(false)
   const [success, setSuccess] = useState<"INTERESTED" | "PAID" | null>(null)
+  const [currentImgIndex, setCurrentImgIndex] = useState(0)
+
+  let imagesArray: string[] = []
+  if (product && product.images) {
+    try {
+      if (product.images.startsWith('[')) {
+        imagesArray = JSON.parse(product.images)
+      } else {
+        imagesArray = [product.images]
+      }
+    } catch(e) {
+      imagesArray = [product.images]
+    }
+  }
 
   useEffect(() => {
     async function load() {
@@ -102,13 +116,30 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           </Link>
 
           <div className="bg-white rounded-[2rem] sm:rounded-[2.5rem] shadow-xl border border-gray-100 overflow-hidden flex flex-col md:flex-row relative">
-            <div className="md:w-1/2 bg-gray-50 p-10 min-h-[300px] sm:min-h-[400px] flex items-center justify-center relative overflow-hidden group border-b md:border-b-0 md:border-r border-gray-100">
-              {product.images ? (
-                <img
-                  src={product.images}
-                  alt={product.title}
-                  className="w-full h-full object-contain max-h-[500px] transition-transform duration-700 group-hover:scale-105"
-                />
+            <div className="md:w-1/2 bg-gray-50 p-4 sm:p-10 min-h-[300px] sm:min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden group border-b md:border-b-0 md:border-r border-gray-100">
+              {imagesArray.length > 0 ? (
+                <>
+                  <div className="w-full flex-grow flex items-center justify-center relative mb-4">
+                    <img
+                      src={imagesArray[currentImgIndex]}
+                      alt={product.title}
+                      className="w-full h-full object-contain max-h-[400px] transition-transform duration-700 group-hover:scale-105"
+                    />
+                  </div>
+                  {imagesArray.length > 1 && (
+                    <div className="flex gap-3 overflow-x-auto pb-2 px-2 w-full max-w-full z-20 relative justify-center">
+                      {imagesArray.map((img, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setCurrentImgIndex(idx)}
+                          className={`w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${currentImgIndex === idx ? 'border-blue-600 opacity-100 shadow-md scale-105' : 'border-transparent opacity-50 hover:opacity-100'}`}
+                        >
+                          <img src={img} className="w-full h-full object-cover" />
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="text-gray-400 flex flex-col items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 opacity-20 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
