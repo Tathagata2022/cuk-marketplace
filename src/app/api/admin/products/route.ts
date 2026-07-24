@@ -15,7 +15,14 @@ export async function GET() {
       orderBy: { createdAt: "desc" },
       include: {
         seller: {
-          select: { name: true, email: true }
+          select: { 
+            name: true, 
+            email: true,
+            phoneNumber: true,
+            department: true,
+            course: true,
+            semester: true
+          }
         }
       }
     })

@@ -1,12 +1,14 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { deleteProduct, updateProductPrice } from "../../actions/product"
+import { deleteProduct, updateProductStatus, updateProductDetails } from "../../actions/product"
 import Link from "next/link"
 
 export default function AdminProducts() {
   const [products, setProducts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [editingProduct, setEditingProduct] = useState<any>(null)
+  const [viewingSeller, setViewingSeller] = useState<any>(null)
 
   async function fetchProducts() {
     setLoading(true)
@@ -25,30 +27,31 @@ export default function AdminProducts() {
     fetchProducts()
   }, [])
 
-  async function handleDelete(id: string) {
-    if (!confirm("Are you sure you want to delete this product? All related orders will be deleted too.")) return
-    
-    const res = await deleteProduct(id)
+  async function handleToggleStatus(id: string, currentStatus: string) {
+    const newStatus = currentStatus === "PUBLISHED" ? "REVOKED" : "PUBLISHED"
+    const res = await updateProductStatus(id, newStatus)
     if (res.success) {
-      setProducts(products.filter(p => p.id !== id))
+      setProducts(products.map(p => p.id === id ? { ...p, status: newStatus } : p))
     } else {
       alert(res.error)
     }
   }
 
-  async function handlePriceUpdate(id: string, currentPrice: number) {
-    const newPriceStr = prompt(`Enter new price (Current: ₹${currentPrice})`, currentPrice.toString())
-    if (!newPriceStr) return
-    
-    const newPrice = parseFloat(newPriceStr)
-    if (isNaN(newPrice) || newPrice < 0) {
-      alert("Invalid price")
-      return
+  async function handleSaveDetails(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const data = {
+      title: formData.get("title"),
+      description: formData.get("description"),
+      price: parseFloat(formData.get("price") as string),
+      category: formData.get("category"),
+      condition: formData.get("condition")
     }
 
-    const res = await updateProductPrice(id, newPrice)
+    const res = await updateProductDetails(editingProduct.id, data)
     if (res.success) {
-      setProducts(products.map(p => p.id === id ? { ...p, price: newPrice } : p))
+      setProducts(products.map(p => p.id === editingProduct.id ? { ...p, ...data } : p))
+      setEditingProduct(null)
     } else {
       alert(res.error)
     }
@@ -90,26 +93,39 @@ export default function AdminProducts() {
                   PRD-{product.id.split('-')[0].toUpperCase()}
                 </td>
                 <td className="p-4 font-medium">{product.title}</td>
-                <td className="p-4">{product.seller.name || product.seller.email}</td>
+                <td className="p-4">
+                  <button onClick={() => setViewingSeller(product.seller)} className="text-blue-600 hover:underline font-bold">
+                    {product.seller.name || product.seller.email}
+                  </button>
+                </td>
                 <td className="p-4 font-bold">₹{product.price}</td>
                 <td className="p-4">
-                  <span className="px-2 py-1 text-xs font-semibold rounded bg-blue-100 text-blue-800">
+                  <span className={`px-2 py-1 text-xs font-semibold rounded ${product.status === "PUBLISHED" ? "bg-blue-100 text-blue-800" : "bg-red-100 text-red-800"}`}>
                     {product.status}
                   </span>
                 </td>
                 <td className="p-4 flex gap-2">
                   <button 
-                    onClick={() => handlePriceUpdate(product.id, product.price)}
+                    onClick={() => setEditingProduct(product)}
                     className="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 font-medium"
                   >
-                    Edit Price
+                    Edit Details
                   </button>
-                  <button 
-                    onClick={() => handleDelete(product.id)}
-                    className="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 font-medium"
-                  >
-                    Revoke
-                  </button>
+                  {product.status === "PUBLISHED" ? (
+                    <button 
+                      onClick={() => handleToggleStatus(product.id, product.status)}
+                      className="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 font-medium"
+                    >
+                      Revoke
+                    </button>
+                  ) : (
+                    <button 
+                      onClick={() => handleToggleStatus(product.id, product.status)}
+                      className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded hover:bg-emerald-200 font-medium"
+                    >
+                      Publish
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -120,7 +136,78 @@ export default function AdminProducts() {
             )}
           </tbody>
         </table>
-      </div>
+      {/* Edit Details Modal */}
+      {editingProduct && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <h2 className="text-xl font-bold mb-4">Edit Product Details</h2>
+            <form onSubmit={handleSaveDetails} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Title</label>
+                <input name="title" defaultValue={editingProduct.title} required className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2" />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Description</label>
+                <textarea name="description" defaultValue={editingProduct.description} required rows={3} className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2" />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Price (₹)</label>
+                <input name="price" type="number" defaultValue={editingProduct.price} required className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2" />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Category</label>
+                <input name="category" defaultValue={editingProduct.category} required className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2" />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Condition</label>
+                <input name="condition" defaultValue={editingProduct.condition} required className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2" />
+              </div>
+              <div className="flex justify-end gap-2 pt-4">
+                <button type="button" onClick={() => setEditingProduct(null)} className="px-4 py-2 text-gray-600 bg-gray-100 rounded-lg font-bold">Cancel</button>
+                <button type="submit" className="px-4 py-2 text-white bg-blue-600 rounded-lg font-bold">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Seller Details Modal */}
+      {viewingSeller && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl p-8 max-w-sm w-full text-center">
+            <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-2xl font-black mx-auto mb-4">
+              {viewingSeller.name?.charAt(0) || "U"}
+            </div>
+            <h2 className="text-xl font-bold mb-1">{viewingSeller.name}</h2>
+            <p className="text-sm text-gray-500 mb-6">{viewingSeller.email}</p>
+            
+            <div className="text-left space-y-3 bg-gray-50 p-4 rounded-xl mb-6">
+              <div>
+                <span className="block text-[10px] uppercase font-bold text-gray-400">Phone Number</span>
+                <span className="font-medium text-gray-900">{viewingSeller.phoneNumber || "Not provided"}</span>
+              </div>
+              <div>
+                <span className="block text-[10px] uppercase font-bold text-gray-400">Department</span>
+                <span className="font-medium text-gray-900">{viewingSeller.department || "Not provided"}</span>
+              </div>
+              <div className="flex gap-4">
+                <div>
+                  <span className="block text-[10px] uppercase font-bold text-gray-400">Course</span>
+                  <span className="font-medium text-gray-900">{viewingSeller.course || "-"}</span>
+                </div>
+                <div>
+                  <span className="block text-[10px] uppercase font-bold text-gray-400">Semester</span>
+                  <span className="font-medium text-gray-900">{viewingSeller.semester || "-"}</span>
+                </div>
+              </div>
+            </div>
+
+            <button onClick={() => setViewingSeller(null)} className="w-full py-3 bg-gray-900 text-white rounded-xl font-bold">
+              Close Details
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

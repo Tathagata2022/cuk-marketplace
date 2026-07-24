@@ -15,7 +15,10 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
   const params = await searchParams
   const currentCategory = params.category || "All"
 
-  const whereClause = currentCategory !== "All" ? { category: currentCategory } : {}
+  const whereClause: any = { status: "PUBLISHED" }
+  if (currentCategory !== "All") {
+    whereClause.category = currentCategory
+  }
   const products = await prisma.product.findMany({
     where: whereClause,
     orderBy: { createdAt: "desc" },

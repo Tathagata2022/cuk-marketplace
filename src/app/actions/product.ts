@@ -132,6 +132,50 @@ export async function updateProductPrice(productId: string, newPrice: number) {
   }
 }
 
+export async function updateProductStatus(productId: string, newStatus: string) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user || (session.user as any).role !== "ADMIN") {
+    return { success: false, error: "Unauthorized" }
+  }
+
+  try {
+    await prisma.product.update({
+      where: { id: productId },
+      data: { status: newStatus }
+    })
+    revalidatePath("/products")
+    revalidatePath("/")
+    return { success: true }
+  } catch (e) {
+    return { success: false, error: "Failed to update status" }
+  }
+}
+
+export async function updateProductDetails(productId: string, data: any) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user || (session.user as any).role !== "ADMIN") {
+    return { success: false, error: "Unauthorized" }
+  }
+
+  try {
+    await prisma.product.update({
+      where: { id: productId },
+      data: {
+        title: data.title,
+        description: data.description,
+        price: data.price,
+        category: data.category,
+        condition: data.condition
+      }
+    })
+    revalidatePath("/products")
+    revalidatePath("/")
+    return { success: true }
+  } catch (e) {
+    return { success: false, error: "Failed to update details" }
+  }
+}
+
 export async function deleteMyProduct(productId: string) {
   const session = await getServerSession(authOptions)
   if (!session?.user) {
