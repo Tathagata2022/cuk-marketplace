@@ -38,7 +38,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
     <div className="min-h-screen bg-[#fcfcfc] flex flex-col relative text-gray-900">
       <Navbar />
 
-      <main className="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <main className="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-24 md:pb-12">
         {/* Hero Section */}
         <div className="relative bg-white rounded-[2.5rem] p-8 sm:p-12 mb-12 border border-gray-100 shadow-sm overflow-hidden text-center">
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-emerald-400"></div>

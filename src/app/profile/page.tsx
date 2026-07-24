@@ -45,7 +45,7 @@ export default async function ProfileDashboard() {
       <div className="relative z-10 flex flex-col min-h-screen">
         <Navbar />
 
-        <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-24 md:pb-8 w-full">
           
           {/* Profile Header Card */}
           <div className="clean-card bg-white rounded-[2rem] p-6 sm:p-10 mb-10 shadow-sm border border-gray-100 relative overflow-hidden">

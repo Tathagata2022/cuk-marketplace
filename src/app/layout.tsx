@@ -36,7 +36,7 @@ export default function RootLayout({
         <Providers>
           <PWARegister />
           <OnboardingGuard />
-          <div className="pb-20 md:pb-0 flex flex-col flex-grow">
+          <div className="flex flex-col flex-grow">
             {children}
           </div>
           <BottomNav />
