@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
-import Image from "next/image"
 import { useState } from "react"
 
 interface AnimatedProductCardProps {
@@ -42,12 +41,10 @@ export default function AnimatedProductCard({ product, actionButton, orderStatus
           {/* Image Container */}
           <div className="relative aspect-[4/3] bg-gray-50 overflow-hidden border-b border-gray-100">
             {displayImage ? (
-              <Image
+              <img
                 src={displayImage}
                 alt={product.title}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
             ) : (
               <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-gray-50 gap-2">

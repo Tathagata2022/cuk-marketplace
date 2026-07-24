@@ -4,7 +4,6 @@ import { use, useState, useEffect } from "react"
 import { getProductById, expressInterest, payForProduct, getRelatedProducts } from "../../actions/product"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
-import Image from "next/image"
 import Navbar from "@/components/Navbar"
 import AnimatedProductCard from "@/components/AnimatedProductCard"
 
@@ -127,12 +126,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               {imagesArray.length > 0 ? (
                 <>
                   <div className="w-full flex-grow flex items-center justify-center relative mb-4 h-[300px] sm:h-[400px]">
-                    <Image
+                    <img
                       src={imagesArray[currentImgIndex]}
                       alt={product.title}
-                      fill
-                      priority
-                      className="object-contain transition-transform duration-700 group-hover:scale-105"
+                      className="w-full h-full object-contain max-h-[400px] transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
                   {imagesArray.length > 1 && (
@@ -143,7 +140,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                           onClick={() => setCurrentImgIndex(idx)}
                           className={`relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${currentImgIndex === idx ? 'border-blue-600 opacity-100 shadow-md scale-105' : 'border-transparent opacity-50 hover:opacity-100'}`}
                         >
-                          <Image src={img} alt="Thumbnail" fill className="object-cover" />
+                          <img src={img} className="w-full h-full object-cover" />
                         </button>
                       ))}
                     </div>
