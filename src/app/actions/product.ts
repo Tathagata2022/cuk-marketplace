@@ -145,9 +145,33 @@ export async function updateProductStatus(productId: string, newStatus: string) 
     })
     revalidatePath("/products")
     revalidatePath("/")
+    revalidatePath("/admin/products")
     return { success: true }
   } catch (e) {
     return { success: false, error: "Failed to update status" }
+  }
+}
+
+export async function toggleProductVerification(productId: string) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user || (session.user as any).role !== "ADMIN") {
+    return { success: false, error: "Unauthorized" }
+  }
+
+  try {
+    const product = await prisma.product.findUnique({ where: { id: productId } })
+    if (!product) throw new Error("Product not found")
+
+    await prisma.product.update({
+      where: { id: productId },
+      data: { isVerified: !product.isVerified }
+    })
+    revalidatePath("/products")
+    revalidatePath("/")
+    revalidatePath("/admin/products")
+    return { success: true }
+  } catch (e) {
+    return { success: false, error: "Failed to toggle verification" }
   }
 }
 

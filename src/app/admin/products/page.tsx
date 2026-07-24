@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { deleteProduct, updateProductStatus, updateProductDetails } from "../../actions/product"
+import { deleteProduct, updateProductStatus, updateProductDetails, toggleProductVerification } from "../../actions/product"
 import Link from "next/link"
 
 export default function AdminProducts() {
@@ -32,6 +32,15 @@ export default function AdminProducts() {
     const res = await updateProductStatus(id, newStatus)
     if (res.success) {
       setProducts(products.map(p => p.id === id ? { ...p, status: newStatus } : p))
+    } else {
+      alert(res.error)
+    }
+  }
+
+  async function handleToggleVerify(id: string, currentVerify: boolean) {
+    const res = await toggleProductVerification(id)
+    if (res.success) {
+      setProducts(products.map(p => p.id === id ? { ...p, isVerified: !currentVerify } : p))
     } else {
       alert(res.error)
     }
@@ -111,11 +120,21 @@ export default function AdminProducts() {
                 </td>
                 <td className="p-4 font-bold">₹{product.price}</td>
                 <td className="p-4">
-                  <span className={`px-2 py-1 text-xs font-semibold rounded ${product.status === "PUBLISHED" ? "bg-blue-100 text-blue-800" : "bg-red-100 text-red-800"}`}>
-                    {product.status}
-                  </span>
+                  <div className="flex flex-col gap-1">
+                    <span className={`px-2 py-1 text-xs font-semibold rounded w-fit ${product.status === "PUBLISHED" ? "bg-blue-100 text-blue-800" : "bg-red-100 text-red-800"}`}>
+                      {product.status}
+                    </span>
+                    {product.isVerified && (
+                      <span className="px-2 py-1 text-[10px] font-bold rounded w-fit bg-emerald-100 text-emerald-800 flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        VERIFIED
+                      </span>
+                    )}
+                  </div>
                 </td>
-                <td className="p-4 flex gap-2">
+                <td className="p-4 flex flex-wrap gap-2">
                   <button 
                     onClick={() => setEditingProduct(product)}
                     className="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 font-medium"
@@ -137,6 +156,12 @@ export default function AdminProducts() {
                       Publish
                     </button>
                   )}
+                  <button 
+                    onClick={() => handleToggleVerify(product.id, product.isVerified)}
+                    className={`px-3 py-1 rounded font-medium ${product.isVerified ? 'bg-gray-100 text-gray-700 hover:bg-gray-200' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'}`}
+                  >
+                    {product.isVerified ? "Unverify" : "Verify"}
+                  </button>
                   <button 
                     onClick={() => handleDelete(product.id)}
                     className="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 font-medium"

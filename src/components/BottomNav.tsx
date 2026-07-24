@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Home, PlusCircle, User, LayoutDashboard } from "lucide-react";
+import { Home, PlusCircle, User, LayoutDashboard, ClipboardList } from "lucide-react";
 
 export default function BottomNav() {
   const pathname = usePathname();
@@ -36,6 +36,14 @@ export default function BottomNav() {
         >
           <PlusCircle className="w-5 h-5" />
           <span className="text-[10px] font-bold">Sell</span>
+        </Link>
+        
+        <Link 
+          href="/requests"
+          className={`flex flex-col items-center justify-center w-full h-full gap-1 transition-colors ${pathname.startsWith("/requests") ? "text-blue-600" : "text-gray-500"}`}
+        >
+          <ClipboardList className="w-5 h-5" />
+          <span className="text-[10px] font-bold">Requests</span>
         </Link>
         
         {/* @ts-ignore */}

@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import AnimatedProductCard from "@/components/AnimatedProductCard"
 
-export default async function Home({ searchParams }: { searchParams: Promise<{ category?: string, q?: string }> }) {
+export default async function Home({ searchParams }: { searchParams: Promise<{ category?: string, q?: string, sort?: string, cond?: string }> }) {
   const session = await getServerSession(authOptions)
   
   if (!session) {
@@ -15,10 +15,15 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
   const params = await searchParams
   const currentCategory = params.category || "All"
   const searchQuery = params.q || ""
+  const currentSort = params.sort || "newest"
+  const currentCond = params.cond || "All"
 
   const whereClause: any = { status: "PUBLISHED" }
   if (currentCategory !== "All") {
     whereClause.category = currentCategory
+  }
+  if (currentCond !== "All") {
+    whereClause.condition = currentCond
   }
   if (searchQuery) {
     whereClause.OR = [
@@ -26,9 +31,14 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
       { description: { contains: searchQuery, mode: "insensitive" } }
     ]
   }
+  
+  let orderByClause: any = { createdAt: "desc" }
+  if (currentSort === "price_asc") orderByClause = { price: "asc" }
+  if (currentSort === "price_desc") orderByClause = { price: "desc" }
+  
   const products = await prisma.product.findMany({
     where: whereClause,
-    orderBy: { createdAt: "desc" },
+    orderBy: orderByClause,
     include: { seller: true }
   })
 
@@ -70,8 +80,24 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
           {/* Grid */}
           <div className="flex-1">
             <div className="mb-8">
-              <form action="/" method="GET" className="flex gap-2">
+              <form action="/" method="GET" className="flex flex-col sm:flex-row gap-2">
                 {currentCategory !== "All" && <input type="hidden" name="category" value={currentCategory} />}
+                
+                <div className="flex gap-2 w-full sm:w-auto">
+                  <select name="sort" defaultValue={currentSort} className="w-full sm:w-auto px-4 py-3 bg-white border border-gray-200 rounded-xl font-bold text-gray-700 outline-none focus:border-blue-500 shadow-sm appearance-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.7rem center', backgroundSize: '1.2em' }}>
+                    <option value="newest">Newest First</option>
+                    <option value="price_asc">Price: Low to High</option>
+                    <option value="price_desc">Price: High to Low</option>
+                  </select>
+                  <select name="cond" defaultValue={currentCond} className="w-full sm:w-auto px-4 py-3 bg-white border border-gray-200 rounded-xl font-bold text-gray-700 outline-none focus:border-blue-500 shadow-sm appearance-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.7rem center', backgroundSize: '1.2em' }}>
+                    <option value="All">All Conditions</option>
+                    <option value="Brand New">Brand New</option>
+                    <option value="Like New">Like New</option>
+                    <option value="Good">Good</option>
+                    <option value="Fair">Fair</option>
+                  </select>
+                </div>
+
                 <div className="relative flex-1">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -83,11 +109,12 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
                     name="q" 
                     defaultValue={searchQuery}
                     placeholder="Search for textbooks, electronics, cycles..." 
-                    className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-medium"
+                    className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-medium shadow-sm"
                   />
                 </div>
-                <button type="submit" className="px-6 py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 transition-colors">
-                  Search
+                
+                <button type="submit" className="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-md w-full sm:w-auto">
+                  Filter
                 </button>
               </form>
             </div>

@@ -30,6 +30,7 @@ export default function Navbar() {
           {status === "authenticated" ? (
             <div className="hidden md:flex items-center gap-6 lg:gap-8">
               <Link href="/" className="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">Feed</Link>
+              <Link href="/requests" className="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">ISO Board</Link>
               <Link href="/profile" className="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">Profile</Link>
               <Link href="/sell" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full text-sm font-bold transition-all shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 flex items-center gap-2 transform hover:-translate-y-0.5">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -138,6 +139,14 @@ export default function Navbar() {
                   Profile
                 </Link>
               </div>
+
+              <Link 
+                href="/requests" 
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center justify-center w-full bg-blue-50 text-blue-700 border border-blue-100 py-3 rounded-2xl font-bold transition-transform"
+              >
+                In Search Of (ISO) Board
+              </Link>
 
               <Link 
                 href="/sell" 

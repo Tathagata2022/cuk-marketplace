@@ -54,6 +54,7 @@ model User {
   sessions      Session[]
   products      Product[]
   orders        Order[]
+  itemRequests  ItemRequest[]
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -76,6 +77,7 @@ model Product {
   category      String
   images        String    // JSON stringified array of URLs
   status        String    @default("PUBLISHED")
+  isVerified    Boolean   @default(false)
   
   sellerId      String
   seller        User      @relation(fields: [sellerId], references: [id])
@@ -96,6 +98,21 @@ model Order {
   
   status        String    @default("INTERESTED")
   adminNotes    String?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model ItemRequest {
+  id            String    @id @default(uuid())
+  title         String
+  description   String
+  budget        Float
+  category      String
+  status        String    @default("ACTIVE")
+  
+  requesterId   String
+  requester     User      @relation(fields: [requesterId], references: [id])
   
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
