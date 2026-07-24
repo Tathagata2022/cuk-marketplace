@@ -3,6 +3,20 @@ import GoogleProvider from "next-auth/providers/google"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/lib/prisma"
 
+const ADMIN_EMAILS = [
+  'tathagatamandal68@gmail.com',
+  'mamuhammed.2502405013@cukerala.ac.in',
+  'nandana.2502405026@cukerala.ac.in',
+  'amith.2500405002@cukerala.ac.in',
+  'ashok.2500505030@cukerala.ac.in',
+  'naja.2502405036@cukerala.ac.in',
+  'tathagata.2500705021@cukerala.ac.in',
+  'aryamithra.2502405028@cukerala.ac.in',
+  'aiswarjinee.2501004039@cukerala.ac.in',
+  'hiba.2500405008@cukerala.ac.in',
+  'divyanshu.2502504008@cukerala.ac.in'
+];
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as any,
   providers: [
@@ -24,7 +38,7 @@ export const authOptions: NextAuthOptions = {
         })
 
         // Auto-assign ADMIN role to specific email
-        if (dbUser && dbUser.email === 'tathagatamandal68@gmail.com' && dbUser.role !== 'ADMIN') {
+        if (dbUser && dbUser.email && ADMIN_EMAILS.includes(dbUser.email) && dbUser.role !== 'ADMIN') {
           dbUser = await prisma.user.update({
             where: { email: dbUser.email },
             data: { role: 'ADMIN' }
