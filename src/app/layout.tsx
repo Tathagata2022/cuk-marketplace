@@ -36,7 +36,9 @@ export default function RootLayout({
         <Providers>
           <PWARegister />
           <OnboardingGuard />
-          {children}
+          <div className="pb-20 md:pb-0 flex flex-col flex-grow">
+            {children}
+          </div>
           <BottomNav />
           <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
         </Providers>
