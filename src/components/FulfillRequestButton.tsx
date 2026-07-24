@@ -1,34 +1,29 @@
 "use client"
 
 import { useState } from "react"
-import { fulfillItemRequest } from "@/app/actions/request"
+import { deleteItemRequest } from "@/app/actions/request"
 import toast from "react-hot-toast"
-import { useRouter } from "next/navigation"
+import Link from "next/link"
 
-export default function FulfillRequestButton({ requestId }: { requestId: string }) {
+export default function FulfillRequestButton({ requestId, isOwner, category }: { requestId: string, isOwner: boolean, category: string }) {
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
+  const [deleted, setDeleted] = useState(false)
 
-  const handleFulfill = async () => {
+  const handleDelete = async () => {
+    if (!confirm("Are you sure you want to delete this request?")) return
     setLoading(true)
-    const promise = fulfillItemRequest(requestId)
+    const promise = deleteItemRequest(requestId)
     
     toast.promise(promise, {
-      loading: 'Marking as fulfilled...',
-      success: 'Request fulfilled! 🎉 You can now create a listing for this item.',
-      error: 'Failed to fulfill request.',
+      loading: 'Deleting request...',
+      success: 'Request deleted!',
+      error: 'Failed to delete request.',
     })
 
     try {
       const res = await promise
       if (res.success) {
-        setTimeout(() => {
-          router.push("/sell")
-        }, 1500)
-      } else {
-        if (res.error === "Unauthorized") {
-          toast.error("Please login first to fulfill requests")
-        }
+        setDeleted(true)
       }
     } catch (e) {
       console.error(e)
@@ -37,13 +32,26 @@ export default function FulfillRequestButton({ requestId }: { requestId: string 
     }
   }
 
+  if (deleted) return null
+
+  if (isOwner) {
+    return (
+      <button 
+        onClick={handleDelete}
+        disabled={loading}
+        className="text-[10px] font-bold uppercase tracking-widest text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors"
+      >
+        {loading ? "..." : "Delete Request"}
+      </button>
+    )
+  }
+
   return (
-    <button 
-      onClick={handleFulfill}
-      disabled={loading}
-      className="bg-blue-50 text-blue-700 hover:bg-blue-100 font-bold py-2 px-4 rounded-xl transition-colors shadow-sm disabled:opacity-50"
+    <Link 
+      href={`/sell?category=${encodeURIComponent(category)}`}
+      className="bg-blue-50 text-blue-700 hover:bg-blue-100 font-bold py-2 px-4 rounded-xl transition-colors shadow-sm"
     >
-      {loading ? "Processing..." : "I have this!"}
-    </button>
+      I have this!
+    </Link>
   )
 }

@@ -2,10 +2,14 @@ import { getActiveItemRequests } from "@/app/actions/request"
 import Navbar from "@/components/Navbar"
 import Link from "next/link"
 import FulfillRequestButton from "@/components/FulfillRequestButton"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 
 export const dynamic = "force-dynamic"
 
 export default async function RequestsPage() {
+  const session = await getServerSession(authOptions)
+  const userId = session?.user ? (session.user as any).id : null
   const requests = await getActiveItemRequests()
 
   return (
@@ -64,7 +68,7 @@ export default async function RequestsPage() {
                     <p className="text-2xl font-black text-gray-900 leading-none tracking-tight">₹{req.budget.toLocaleString('en-IN')}</p>
                   </div>
                   
-                  <FulfillRequestButton requestId={req.id} />
+                  <FulfillRequestButton requestId={req.id} isOwner={req.requesterId === userId} category={req.category} />
                 </div>
               </div>
             ))}

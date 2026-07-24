@@ -39,21 +39,29 @@ export async function getActiveItemRequests() {
   })
 }
 
-export async function fulfillItemRequest(requestId: string) {
+export async function deleteItemRequest(requestId: string) {
   const session = await getServerSession(authOptions)
   
-  if (!session || !session.user) {
+  if (!session || !session.user || !(session.user as any).id) {
     return { success: false, error: "Unauthorized" }
   }
 
   try {
-    await prisma.itemRequest.update({
-      where: { id: requestId },
-      data: { status: "FULFILLED" }
+    const request = await prisma.itemRequest.findUnique({
+      where: { id: requestId }
     })
+    
+    if (!request || request.requesterId !== (session.user as any).id) {
+      return { success: false, error: "Unauthorized" }
+    }
+
+    await prisma.itemRequest.delete({
+      where: { id: requestId }
+    })
+    
     revalidatePath("/requests")
     return { success: true }
   } catch (error) {
-    return { success: false, error: "Failed to fulfill request" }
+    return { success: false, error: "Failed to delete request" }
   }
 }

@@ -1,8 +1,8 @@
 "use client"
 
 import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useState, Suspense } from "react"
 import { createProduct } from "../actions/product"
 import { motion } from "framer-motion"
 import toast from "react-hot-toast"
@@ -10,9 +10,24 @@ import toast from "react-hot-toast"
 import Navbar from "@/components/Navbar"
 
 export default function SellPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
+        <div className="w-16 h-16 rounded-full border-4 border-blue-200 border-t-blue-600 animate-spin"></div>
+      </div>
+    }>
+      <SellForm />
+    </Suspense>
+  )
+}
+
+function SellForm() {
   const { data: session, status } = useSession()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [loading, setLoading] = useState(false)
+  
+  const defaultCategory = searchParams.get("category") || "📚 Books & Study Materials"
 
   if (status === "loading") {
     return (
@@ -165,6 +180,7 @@ export default function SellPage() {
                   <select 
                     name="category"
                     required
+                    defaultValue={defaultCategory}
                     className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-3.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 font-medium appearance-none"
                     style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2em' }}
                   >
