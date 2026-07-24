@@ -14,6 +14,11 @@ export default function BottomNav() {
     return null;
   }
 
+  // Hide if the user is not logged in (e.g., they are seeing the WelcomeGate on the home page)
+  if (!session) {
+    return null;
+  }
+
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 pb-safe z-50 shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)]">
       <div className="flex justify-around items-center h-16">
