@@ -14,10 +14,17 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
 
   const params = await searchParams
   const currentCategory = params.category || "All"
+  const searchQuery = params.q || ""
 
   const whereClause: any = { status: "PUBLISHED" }
   if (currentCategory !== "All") {
     whereClause.category = currentCategory
+  }
+  if (searchQuery) {
+    whereClause.OR = [
+      { title: { contains: searchQuery, mode: "insensitive" } },
+      { description: { contains: searchQuery, mode: "insensitive" } }
+    ]
   }
   const products = await prisma.product.findMany({
     where: whereClause,
@@ -65,9 +72,32 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
 
           {/* Grid */}
           <div className="flex-1">
+            <div className="mb-8">
+              <form action="/" method="GET" className="flex gap-2">
+                {currentCategory !== "All" && <input type="hidden" name="category" value={currentCategory} />}
+                <div className="relative flex-1">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                  <input 
+                    type="text" 
+                    name="q" 
+                    defaultValue={searchQuery}
+                    placeholder="Search for textbooks, electronics, cycles..." 
+                    className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-medium"
+                  />
+                </div>
+                <button type="submit" className="px-6 py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 transition-colors">
+                  Search
+                </button>
+              </form>
+            </div>
+
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-black text-gray-900">
-                {currentCategory === "All" ? "Latest Arrivals" : `${currentCategory} Collection`}
+                {searchQuery ? `Results for "${searchQuery}"` : (currentCategory === "All" ? "Latest Arrivals" : `${currentCategory} Collection`)}
               </h2>
               <span className="text-sm font-bold text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{products.length} Items</span>
             </div>

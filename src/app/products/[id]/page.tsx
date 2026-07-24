@@ -179,16 +179,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 <div>
                   <span className="block text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1.5">Seller</span>
                   <span className="text-sm font-bold text-gray-800 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-blue-50 border border-blue-100 overflow-hidden flex-shrink-0">
-                      {product.seller.image ? (
-                        <img src={product.seller.image} alt={product.seller.name} className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-[12px] font-black text-blue-600">
-                          {product.seller.name?.charAt(0) || "U"}
-                        </div>
-                      )}
+                    <div className="w-8 h-8 rounded-full bg-blue-50 border border-blue-100 overflow-hidden flex-shrink-0 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                      </svg>
                     </div>
-                    <span className="truncate max-w-[120px]">{product.seller.name}</span>
+                    <span className="truncate max-w-[120px]">Anonymous Student</span>
                   </span>
                 </div>
               </div>

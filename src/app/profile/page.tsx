@@ -146,7 +146,8 @@ export default async function ProfileDashboard() {
                     <AnimatedProductCard 
                       key={order.product.id} 
                       product={order.product} 
-                      actionButton={<RemoveInterestButton orderId={order.id} />}
+                      orderStatus={order.status}
+                      actionButton={order.status === "INTERESTED" ? <RemoveInterestButton orderId={order.id} /> : undefined}
                     />
                   ))}
                 </AnimatedGridContainer>

@@ -5,6 +5,7 @@ import Providers from "@/components/Providers";
 import { Toaster } from "react-hot-toast";
 import OnboardingGuard from "@/components/OnboardingGuard";
 import PWARegister from "@/components/PWARegister";
+import BottomNav from "@/components/BottomNav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
           <PWARegister />
           <OnboardingGuard />
           {children}
+          <BottomNav />
           <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
         </Providers>
       </body>

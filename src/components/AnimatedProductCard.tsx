@@ -4,7 +4,13 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { useState } from "react"
 
-export default function AnimatedProductCard({ product, actionButton }: { product: any, actionButton?: React.ReactNode }) {
+interface AnimatedProductCardProps {
+  product: any
+  actionButton?: React.ReactNode
+  orderStatus?: string
+}
+
+export default function AnimatedProductCard({ product, actionButton, orderStatus }: AnimatedProductCardProps) {
   const [isHovered, setIsHovered] = useState(false)
 
   let displayImage = product.images;
@@ -93,10 +99,25 @@ export default function AnimatedProductCard({ product, actionButton }: { product
               {product.title}
             </h3>
             
-            <p className="text-sm text-gray-500 line-clamp-2 mb-4 flex-grow font-medium">
-              {product.description}
-            </p>
+            <p className="text-sm text-gray-500 mb-4 line-clamp-2 min-h-[40px]">{product.description}</p>
             
+            {orderStatus && (
+              <div className="mb-4">
+                <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold ${
+                  orderStatus === "DELIVERED" ? "bg-emerald-100 text-emerald-800" :
+                  orderStatus === "CANCELLED" ? "bg-red-100 text-red-800" :
+                  "bg-amber-100 text-amber-800"
+                }`}>
+                  <div className={`w-2 h-2 rounded-full ${
+                    orderStatus === "DELIVERED" ? "bg-emerald-500" :
+                    orderStatus === "CANCELLED" ? "bg-red-500" :
+                    "bg-amber-500 animate-pulse"
+                  }`}></div>
+                  {orderStatus === "INTERESTED" ? "PENDING ADMIN REVIEW" : orderStatus}
+                </div>
+              </div>
+            )}
+
             <div className="flex items-end justify-between mt-auto pt-4 border-t border-gray-100">
               <div>
                 <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5">Price</p>
@@ -111,17 +132,13 @@ export default function AnimatedProductCard({ product, actionButton }: { product
                 <div className="text-right">
                   <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5">Seller</p>
                   <p className="text-xs font-bold text-gray-700 truncate max-w-[80px]">
-                    {product.seller.name?.split(' ')[0]}
+                    Anonymous
                   </p>
                 </div>
-                <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-100 border border-gray-200">
-                  {product.seller.image ? (
-                    <img src={product.seller.image} alt={product.seller.name} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-xs font-bold text-gray-500">
-                      {product.seller.name?.charAt(0) || "U"}
-                    </div>
-                  )}
+                <div className="w-8 h-8 rounded-full overflow-hidden bg-blue-50 border border-blue-100 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                  </svg>
                 </div>
               </div>
             </div>
