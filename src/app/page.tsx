@@ -44,9 +44,6 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-emerald-400"></div>
           
           <div className="relative z-10">
-            <div className="inline-block bg-blue-50 border border-blue-100 text-blue-600 px-4 py-1.5 rounded-full mb-6 text-xs font-bold uppercase tracking-widest">
-              v2.0 Now Live
-            </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight mb-4 leading-tight">
               Curated Marketplace: <br className="hidden sm:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-emerald-500">Discover Unique Goods.</span>
