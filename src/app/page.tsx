@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import AnimatedProductCard from "@/components/AnimatedProductCard"
 
-export default async function Home({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
+export default async function Home({ searchParams }: { searchParams: Promise<{ category?: string, q?: string }> }) {
   const session = await getServerSession(authOptions)
   
   if (!session) {
