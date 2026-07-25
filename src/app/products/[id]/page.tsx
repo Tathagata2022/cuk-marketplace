@@ -147,11 +147,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   )}
                 </>
               ) : (
-                <div className="text-gray-400 flex flex-col items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 opacity-20 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <p className="font-medium text-lg">No Image Provided</p>
+                <div className="w-full flex-grow flex items-center justify-center relative h-[300px] sm:h-[400px]">
+                  <img
+                    src="/default-product.png"
+                    alt="Default product"
+                    className="w-full h-full object-contain mix-blend-multiply opacity-80 max-h-[400px] transition-transform duration-700 group-hover:scale-105"
+                  />
                 </div>
               )}
             </div>
