@@ -71,18 +71,35 @@ export default function CheckoutClient({ product, upiId, upiName }: { product: a
             <QRCodeSVG value={upiString} size={200} level="H" />
           </div>
           
-          {isMobile ? (
-            <a 
-              href={upiString}
-              className="w-full bg-blue-600 text-white py-4 px-6 rounded-2xl font-black text-lg shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all hover:-translate-y-1 text-center flex items-center justify-center gap-2 mb-4"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-              </svg>
-              Pay with UPI App
-            </a>
-          ) : (
-            <p className="text-sm font-bold text-gray-500 text-center mb-4">Scan QR code using Google Pay, PhonePe, or Paytm</p>
+          {isMobile && (
+            <div className="w-full flex flex-col gap-3 mb-6">
+              <a 
+                href={`gpay://upi/pay?pa=${upiId}&am=${formattedPrice}&cu=INR`}
+                className="w-full bg-white border border-gray-200 text-gray-800 py-3 px-4 rounded-xl font-bold text-sm shadow-sm hover:bg-gray-50 transition-all text-center flex items-center justify-center gap-2"
+              >
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="GPay" className="w-5 h-5" />
+                Pay with GPay
+              </a>
+              <a 
+                href={`phonepe://pay?pa=${upiId}&am=${formattedPrice}&cu=INR`}
+                className="w-full bg-white border border-gray-200 text-purple-700 py-3 px-4 rounded-xl font-bold text-sm shadow-sm hover:bg-purple-50 transition-all text-center flex items-center justify-center gap-2"
+              >
+                Pay with PhonePe
+              </a>
+              <a 
+                href={`paytmmp://pay?pa=${upiId}&am=${formattedPrice}&cu=INR`}
+                className="w-full bg-white border border-gray-200 text-sky-600 py-3 px-4 rounded-xl font-bold text-sm shadow-sm hover:bg-sky-50 transition-all text-center flex items-center justify-center gap-2"
+              >
+                Pay with Paytm
+              </a>
+              <div className="text-center mt-2">
+                <p className="text-xs text-gray-500 font-medium">Or take a screenshot and scan the QR code above.</p>
+              </div>
+            </div>
+          )}
+          
+          {!isMobile && (
+            <p className="text-sm font-bold text-gray-500 text-center mb-6">Scan QR code using Google Pay, PhonePe, or Paytm</p>
           )}
           
           <div className="w-full bg-blue-50 border border-blue-100 p-4 rounded-xl text-center">
