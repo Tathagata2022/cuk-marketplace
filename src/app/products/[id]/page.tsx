@@ -113,6 +113,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     <img
                       src={imagesArray[currentImgIndex]}
                       alt={product.title}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-contain max-h-[400px] transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
@@ -124,7 +126,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                           onClick={() => setCurrentImgIndex(idx)}
                           className={`relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${currentImgIndex === idx ? 'border-blue-600 opacity-100 shadow-md scale-105' : 'border-transparent opacity-50 hover:opacity-100'}`}
                         >
-                          <img src={img} className="w-full h-full object-cover" />
+                          <img src={img} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                         </button>
                       ))}
                     </div>

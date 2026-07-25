@@ -142,14 +142,14 @@ export default async function ProfileDashboard() {
                 </div>
               ) : (
                 <AnimatedGridContainer>
-                  {myOrders.map(order => (
+                  {myOrders.map(order => order.product ? (
                     <AnimatedProductCard 
                       key={order.product.id} 
                       product={order.product} 
                       orderStatus={order.status}
                       actionButton={order.status === "INTERESTED" ? <RemoveInterestButton orderId={order.id} /> : undefined}
                     />
-                  ))}
+                  ) : null)}
                 </AnimatedGridContainer>
               )}
             </section>

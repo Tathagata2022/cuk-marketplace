@@ -41,18 +41,21 @@ export default function AnimatedProductCard({ product, actionButton, orderStatus
       <Link href={`/products/${product.id}`} className="block h-full">
         <div className="clean-card rounded-[24px] overflow-hidden flex flex-col h-full bg-white transition-all duration-300 group-hover:shadow-xl relative">
           
-          {/* Image Container */}
           <div className="relative aspect-[4/3] bg-gray-50 overflow-hidden border-b border-gray-100">
             {displayImage ? (
               <img
                 src={displayImage}
                 alt={product.title}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
             ) : (
               <img
                 src="/default-product.png"
                 alt="Default product"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover opacity-80 mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-105"
               />
             )}
