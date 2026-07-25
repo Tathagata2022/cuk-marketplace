@@ -32,6 +32,10 @@ export default function Navbar() {
               <Link href="/" className="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">Feed</Link>
               <Link href="/requests" className="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">ISO Board</Link>
               <Link href="/profile" className="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">Profile</Link>
+              {/* @ts-ignore */}
+              {session.user?.role === "ADMIN" && (
+                <Link href="/admin" className="text-sm font-bold text-emerald-600 hover:text-emerald-700 transition-colors">Admin Dashboard</Link>
+              )}
               <Link href="/sell" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full text-sm font-bold transition-all shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 flex items-center gap-2 transform hover:-translate-y-0.5">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -139,6 +143,20 @@ export default function Navbar() {
                   Profile
                 </Link>
               </div>
+
+              {/* @ts-ignore */}
+              {session.user?.role === "ADMIN" && (
+                <Link 
+                  href="/admin" 
+                  onClick={() => setMenuOpen(false)}
+                  className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-emerald-50 border border-emerald-100 font-bold text-emerald-700 hover:bg-emerald-100 transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                  Admin Dashboard
+                </Link>
+              )}
 
               <Link 
                 href="/requests" 
