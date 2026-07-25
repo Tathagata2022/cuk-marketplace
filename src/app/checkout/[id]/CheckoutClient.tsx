@@ -21,7 +21,9 @@ export default function CheckoutClient({ product, upiId, upiName }: { product: a
 
   // Format price exactly to 2 decimal places as required by strict UPI apps
   const formattedPrice = Number(product.price).toFixed(2)
-  const upiString = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(upiName)}&am=${formattedPrice}&cu=INR&tn=Payment%20for%20${encodeURIComponent(product.title.substring(0, 20))}`
+  
+  // Simplified UPI string (removing complex tn) to prevent "Bank limit" or fraud flags in GPay
+  const upiString = `upi://pay?pa=${upiId}&pn=CUK%20Marketplace&am=${formattedPrice}&cu=INR`
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
