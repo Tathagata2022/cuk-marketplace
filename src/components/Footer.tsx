@@ -33,10 +33,9 @@ export default function Footer() {
               >
                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-50 rounded-2xl flex items-center justify-center border border-gray-100 group-hover:border-blue-200 group-hover:shadow-xl group-hover:shadow-blue-600/10 transition-all p-2">
                   <img 
-                    src="https://upload.wikimedia.org/wikipedia/en/3/3b/Central_University_of_Kerala_Logo.png" 
+                    src="/cuk_logo.svg" 
                     alt="CUK Logo" 
                     className="w-full h-full object-contain mix-blend-multiply"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />
                 </div>
                 <h3 className="text-sm sm:text-base font-black text-gray-900 group-hover:text-blue-600 transition-colors">CU Kerala</h3>
@@ -81,7 +80,6 @@ export default function Footer() {
               </div>
               <div className="text-left md:text-right">
                 <h3 className="text-sm font-black text-gray-900 leading-tight group-hover:text-emerald-700 transition-colors">Tathagata Mandal</h3>
-                <p className="text-[11px] font-bold text-emerald-600">Full Stack Engineer</p>
               </div>
             </a>
           </div>
