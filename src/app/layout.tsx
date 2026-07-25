@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import OnboardingGuard from "@/components/OnboardingGuard";
 import PWARegister from "@/components/PWARegister";
 import BottomNav from "@/components/BottomNav";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default function RootLayout({
           <div className="flex flex-col flex-grow">
             {children}
           </div>
+          <Footer />
           <BottomNav />
           <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
         </Providers>
