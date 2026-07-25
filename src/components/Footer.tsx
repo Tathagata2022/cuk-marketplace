@@ -33,9 +33,10 @@ export default function Footer() {
               >
                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-50 rounded-2xl flex items-center justify-center border border-gray-100 group-hover:border-blue-200 group-hover:shadow-xl group-hover:shadow-blue-600/10 transition-all p-2">
                   <img 
-                    src="/cuk_logo.svg" 
+                    src="/cuk_logo.png" 
                     alt="CUK Logo" 
                     className="w-full h-full object-contain mix-blend-multiply"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />
                 </div>
                 <h3 className="text-sm sm:text-base font-black text-gray-900 group-hover:text-blue-600 transition-colors">CU Kerala</h3>
