@@ -19,7 +19,9 @@ export default function CheckoutClient({ product, upiId, upiName }: { product: a
     }
   }, [])
 
-  const upiString = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(upiName)}&am=${product.price}&cu=INR&tn=Payment%20for%20${encodeURIComponent(product.title.substring(0, 30))}`
+  // Format price exactly to 2 decimal places as required by strict UPI apps
+  const formattedPrice = Number(product.price).toFixed(2)
+  const upiString = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(upiName)}&am=${formattedPrice}&cu=INR&tn=Payment%20for%20${encodeURIComponent(product.title.substring(0, 20))}`
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
