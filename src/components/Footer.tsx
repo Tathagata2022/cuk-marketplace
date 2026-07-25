@@ -70,7 +70,7 @@ export default function Footer() {
               href="https://www.linkedin.com/in/tathagata-mandal-453863225/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="hover:text-emerald-600 transition-colors"
+              className="text-emerald-600 hover:text-emerald-500 transition-colors"
             >
               Tathagata Mandal
             </a>
