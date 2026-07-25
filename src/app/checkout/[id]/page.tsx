@@ -30,7 +30,7 @@ export default async function CheckoutPage({ params }: { params: Promise<{ id: s
   }
 
   // Define the Admin UPI Details
-  const upiId = "iedccuk@sbi" 
+  const upiId = "9832667439@jio" 
   const upiName = "IEDC Central University of Kerala"
 
   return (
