@@ -15,34 +15,36 @@ export default function Footer() {
   const isAuth = status === "authenticated"
 
   return (
-    <footer className={`w-full py-6 px-4 bg-transparent mt-auto ${isAuth ? 'pb-24 md:pb-6' : 'pb-6'}`}>
-      <div className="max-w-7xl mx-auto flex flex-col items-center justify-center gap-2 text-center opacity-70 hover:opacity-100 transition-opacity">
+    <footer className={`w-full py-8 px-6 border-t border-gray-200 bg-white mt-auto ${isAuth ? 'pb-28 md:pb-8' : ''}`}>
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         
-        <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-semibold text-gray-500 uppercase tracking-widest">
+        {/* IEDC Credit */}
+        <div className="flex items-center gap-2.5 text-sm font-medium text-gray-500">
           <span>Initiated By</span>
           <a 
             href="https://iedc-cuk.web.app/" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-blue-600 hover:text-blue-700 hover:underline transition-colors flex items-center gap-1.5"
+            className="flex items-center gap-2 text-gray-900 font-bold hover:text-blue-600 transition-colors bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100 hover:border-blue-100 hover:bg-blue-50"
           >
             <img 
               src="https://iedc-cuk.web.app/iedc_logo.png" 
               alt="IEDC" 
-              className="w-3.5 h-3.5 object-contain mix-blend-multiply"
+              className="w-5 h-5 object-contain mix-blend-multiply"
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
             />
             IEDC CUK
           </a>
-          
-          <span className="text-gray-300 mx-1">•</span>
-          
+        </div>
+        
+        {/* Developer Credit */}
+        <div className="flex items-center gap-2.5 text-sm font-medium text-gray-500">
           <span>Developed By</span>
           <a
             href="https://www.linkedin.com/in/tathagata-mandal-453863225/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-emerald-600 hover:text-emerald-700 hover:underline transition-colors"
+            className="text-gray-900 font-bold hover:text-emerald-600 transition-colors bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100 hover:border-emerald-100 hover:bg-emerald-50"
           >
             Tathagata Mandal
           </a>
