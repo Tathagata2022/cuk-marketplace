@@ -54,24 +54,19 @@ export default function CheckoutClient({ product, upiId, upiName }: { product: a
 
   return (
     <div className="bg-white rounded-[2rem] shadow-xl border border-gray-100 overflow-hidden">
-      <div className="p-8 border-b border-gray-100 bg-gray-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-black text-gray-900">Secure Checkout</h1>
-          <p className="text-gray-500 font-medium mt-1">Escrow Managed Transaction via IEDC</p>
-        </div>
-        <div className="text-right">
-          <p className="text-sm font-bold text-gray-500 uppercase tracking-widest">Amount to Pay</p>
-          <p className="text-4xl font-black text-blue-600 tracking-tight">₹{product.price.toLocaleString('en-IN')}</p>
-        </div>
+      <div className="p-6 sm:p-8 border-b border-gray-100 bg-white flex flex-col items-center text-center">
+        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Amount to Pay</p>
+        <h1 className="text-5xl sm:text-6xl font-black text-blue-600 tracking-tight mb-2">₹{product.price.toLocaleString('en-IN')}</h1>
+        <p className="text-sm font-medium text-gray-400 bg-gray-50 px-4 py-1.5 rounded-full border border-gray-100">Escrow Managed Transaction via IEDC</p>
       </div>
 
-      <div className="p-8 grid md:grid-cols-2 gap-12">
+      <div className="p-6 sm:p-8 grid md:grid-cols-2 gap-8 sm:gap-12 bg-gray-50/50">
         {/* Payment Instructions */}
-        <div className="flex flex-col items-center justify-center bg-gray-50 p-6 sm:p-8 rounded-[2rem] border border-gray-100 shadow-inner">
+        <div className="flex flex-col items-center justify-center bg-white p-6 sm:p-8 rounded-[2rem] border border-gray-100 shadow-sm">
           
           {isMobile ? (
             <div className="w-full max-w-sm">
-              <div className="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm">
+              <div className="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm mb-6">
                 <div className="p-4 bg-gray-50/50 border-b border-gray-100 flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
                   <h3 className="text-xs font-black text-gray-800 uppercase tracking-widest">Select UPI App</h3>
@@ -91,32 +86,37 @@ export default function CheckoutClient({ product, upiId, upiName }: { product: a
                     <div className="bg-blue-600 text-white text-[11px] font-black px-4 py-2 rounded-full shadow-md shadow-blue-600/20 active:scale-95 transition-transform">PAY</div>
                   </a>
 
-                  {/* PhonePe */}
+                  {/* PhonePe - CSS Logo */}
                   <a 
                     href={`phonepe://pay?pa=${upiId}&pn=${exactName}&tn=Marketplace&am=${formattedPrice}&cu=INR`}
                     className="flex items-center justify-between p-4 hover:bg-gray-50 active:bg-gray-100 transition-colors group cursor-pointer"
                   >
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-full bg-white border border-gray-100 shadow-sm flex items-center justify-center p-1.5">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/PhonePe_Logo.svg/1200px-PhonePe_Logo.svg.png" alt="PhonePe" className="w-full h-full object-contain" />
+                        <div className="w-full h-full rounded-full bg-[#5f259f] flex items-center justify-center text-white font-bold italic text-xs leading-none pb-0.5">
+                          पे
+                        </div>
                       </div>
-                      <span className="font-bold text-gray-900 group-hover:text-purple-600 transition-colors">PhonePe</span>
+                      <span className="font-bold text-gray-900 group-hover:text-[#5f259f] transition-colors">PhonePe</span>
                     </div>
-                    <div className="bg-purple-600 text-white text-[11px] font-black px-4 py-2 rounded-full shadow-md shadow-purple-600/20 active:scale-95 transition-transform">PAY</div>
+                    <div className="bg-[#5f259f] text-white text-[11px] font-black px-4 py-2 rounded-full shadow-md shadow-purple-900/20 active:scale-95 transition-transform">PAY</div>
                   </a>
 
-                  {/* Paytm */}
+                  {/* Paytm - CSS Logo */}
                   <a 
                     href={`paytmmp://pay?pa=${upiId}&pn=${exactName}&tn=Marketplace&am=${formattedPrice}&cu=INR`}
                     className="flex items-center justify-between p-4 hover:bg-gray-50 active:bg-gray-100 transition-colors group cursor-pointer"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-full bg-white border border-gray-100 shadow-sm flex items-center justify-center p-2">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Paytm_logo.svg/2560px-Paytm_logo.svg.png" alt="Paytm" className="w-full h-full object-contain" />
+                      <div className="w-10 h-10 rounded-full bg-white border border-gray-100 shadow-sm flex items-center justify-center p-1">
+                        <div className="flex items-center -ml-0.5 mt-0.5">
+                          <span className="text-[#002970] font-black italic text-[13px] tracking-tighter">Pay</span>
+                          <span className="text-[#00BAF2] font-black italic text-[13px] tracking-tighter">tm</span>
+                        </div>
                       </div>
-                      <span className="font-bold text-gray-900 group-hover:text-sky-600 transition-colors">Paytm</span>
+                      <span className="font-bold text-gray-900 group-hover:text-[#00BAF2] transition-colors">Paytm</span>
                     </div>
-                    <div className="bg-sky-500 text-white text-[11px] font-black px-4 py-2 rounded-full shadow-md shadow-sky-500/20 active:scale-95 transition-transform">PAY</div>
+                    <div className="bg-[#00BAF2] text-white text-[11px] font-black px-4 py-2 rounded-full shadow-md shadow-sky-500/20 active:scale-95 transition-transform">PAY</div>
                   </a>
                 </div>
               </div>
