@@ -19,19 +19,19 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-10 md:gap-8">
           
-          {/* Branding Left - IEDC & CUK */}
+          {/* Branding Left - Unified IEDC & CUK */}
           <div className="flex flex-col items-center md:items-start gap-4">
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Initiated & Supported By</span>
-            <div className="flex items-center gap-6">
-              
-              {/* CUK Logo */}
-              <a 
-                href="https://www.cukerala.ac.in/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="group flex flex-col items-center gap-2 hover:-translate-y-1 transition-transform duration-300"
-              >
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-50 rounded-2xl flex items-center justify-center border border-gray-100 group-hover:border-blue-200 group-hover:shadow-xl group-hover:shadow-blue-600/10 transition-all p-2">
+            
+            <a 
+              href="https://iedc-cuk.web.app/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group flex flex-col md:flex-row items-center gap-4 hover:-translate-y-1 transition-transform duration-300"
+            >
+              <div className="flex items-center gap-0 bg-gray-50 rounded-2xl p-1.5 border border-gray-100 group-hover:border-blue-200 group-hover:shadow-xl group-hover:shadow-blue-600/10 transition-all">
+                {/* CUK Logo */}
+                <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center p-2">
                   <img 
                     src="/cuk_logo.png" 
                     alt="CUK Logo" 
@@ -39,19 +39,11 @@ export default function Footer() {
                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />
                 </div>
-                <h3 className="text-sm sm:text-base font-black text-gray-900 group-hover:text-blue-600 transition-colors">CU Kerala</h3>
-              </a>
-
-              <div className="w-px h-12 bg-gray-200"></div>
-
-              {/* IEDC Logo */}
-              <a 
-                href="https://iedc-cuk.web.app/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="group flex flex-col items-center gap-2 hover:-translate-y-1 transition-transform duration-300"
-              >
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-50 rounded-2xl flex items-center justify-center border border-gray-100 group-hover:border-blue-200 group-hover:shadow-xl group-hover:shadow-blue-600/10 transition-all p-3">
+                
+                <div className="w-px h-10 bg-gray-200 mx-1"></div>
+                
+                {/* IEDC Logo */}
+                <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center p-2">
                   <img 
                     src="https://iedc-cuk.web.app/iedc_logo.png" 
                     alt="IEDC Logo" 
@@ -59,10 +51,14 @@ export default function Footer() {
                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />
                 </div>
-                <h3 className="text-sm sm:text-base font-black text-gray-900 group-hover:text-blue-600 transition-colors">IEDC</h3>
-              </a>
+              </div>
 
-            </div>
+              <div className="text-center md:text-left">
+                <h3 className="text-xl sm:text-2xl font-black text-gray-900 leading-none mb-1 group-hover:text-blue-600 transition-colors">IEDC CUK</h3>
+                <p className="text-xs sm:text-sm font-bold text-gray-500">Central University of Kerala</p>
+              </div>
+            </a>
+
           </div>
 
           <div className="hidden md:block w-px h-20 bg-gray-100"></div>
