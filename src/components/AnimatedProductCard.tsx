@@ -13,15 +13,18 @@ interface AnimatedProductCardProps {
 export default function AnimatedProductCard({ product, actionButton, orderStatus }: AnimatedProductCardProps) {
   const [isHovered, setIsHovered] = useState(false)
 
-  let displayImage = product.images;
+  let displayImage = ""
   try {
-    if (product.images && product.images.startsWith('[')) {
-      const parsed = JSON.parse(product.images);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        displayImage = parsed[0];
-      }
-    }
-  } catch(e) {}
+    const imagesArray = JSON.parse(product.images)
+    if (imagesArray.length > 0) displayImage = imagesArray[0]
+  } catch (e) {
+    displayImage = product.images // fallback
+  }
+
+  // Treat the old hardcoded headphone image as "no image"
+  if (displayImage && displayImage.includes("photo-1505740420928")) {
+    displayImage = ""
+  }
 
 
   return (

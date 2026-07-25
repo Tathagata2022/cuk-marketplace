@@ -18,16 +18,15 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
   let imagesArray: string[] = []
-  if (product && product.images) {
-    try {
-      if (product.images.startsWith('[')) {
-        imagesArray = JSON.parse(product.images)
-      } else {
-        imagesArray = [product.images]
-      }
-    } catch(e) {
-      imagesArray = [product.images]
-    }
+  try {
+    imagesArray = JSON.parse(product?.images)
+  } catch (e) {
+    if (product?.images) imagesArray = [product.images]
+  }
+
+  // Treat the old hardcoded headphone image as "no image"
+  if (imagesArray.length > 0 && imagesArray[0].includes("photo-1505740420928")) {
+    imagesArray = []
   }
 
   useEffect(() => {
