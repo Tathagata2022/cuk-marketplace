@@ -85,3 +85,22 @@ export async function deleteRequestByAdmin(requestId: string) {
   revalidatePath("/admin")
   return { success: true }
 }
+
+export async function updateRequestByAdmin(requestId: string, data: any) {
+  const session = await getServerSession(authOptions)
+  if (!session || (session.user as any).role !== "ADMIN") return { success: false, error: "Unauthorized" }
+
+  await prisma.itemRequest.update({
+    where: { id: requestId },
+    data: {
+      title: data.title,
+      description: data.description,
+      budget: parseFloat(data.budget),
+      category: data.category,
+      status: data.status,
+    }
+  })
+  revalidatePath("/admin")
+  revalidatePath("/requests")
+  return { success: true }
+}
