@@ -22,9 +22,10 @@ export default function CheckoutClient({ product, upiId, upiName }: { product: a
   // Format price exactly to 2 decimal places as required by strict UPI apps
   const formattedPrice = Number(product.price).toFixed(2)
   
-  // Bare minimum UPI string: Just UPI ID, Amount, and Currency.
-  // Removing Payee Name (pn) forces the app to fetch the real registered name from the bank, preventing mismatch flags.
-  const upiString = `upi://pay?pa=${upiId}&am=${formattedPrice}&cu=INR`
+  // Provide the EXACT bank account name and a simple transaction note.
+  // GPay requires 'pn' (Payee Name) to perfectly match the bank account, otherwise it throws 'Bank Limit Exceeded'.
+  const exactName = encodeURIComponent("Tathagata Mandal")
+  const upiString = `upi://pay?pa=${upiId}&pn=${exactName}&tn=Marketplace&am=${formattedPrice}&cu=INR`
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -74,20 +75,20 @@ export default function CheckoutClient({ product, upiId, upiName }: { product: a
           {isMobile && (
             <div className="w-full flex flex-col gap-3 mb-6">
               <a 
-                href={`gpay://upi/pay?pa=${upiId}&am=${formattedPrice}&cu=INR`}
+                href={`gpay://upi/pay?pa=${upiId}&pn=${exactName}&tn=Marketplace&am=${formattedPrice}&cu=INR`}
                 className="w-full bg-white border border-gray-200 text-gray-800 py-3 px-4 rounded-xl font-bold text-sm shadow-sm hover:bg-gray-50 transition-all text-center flex items-center justify-center gap-2"
               >
                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="GPay" className="w-5 h-5" />
                 Pay with GPay
               </a>
               <a 
-                href={`phonepe://pay?pa=${upiId}&am=${formattedPrice}&cu=INR`}
+                href={`phonepe://pay?pa=${upiId}&pn=${exactName}&tn=Marketplace&am=${formattedPrice}&cu=INR`}
                 className="w-full bg-white border border-gray-200 text-purple-700 py-3 px-4 rounded-xl font-bold text-sm shadow-sm hover:bg-purple-50 transition-all text-center flex items-center justify-center gap-2"
               >
                 Pay with PhonePe
               </a>
               <a 
-                href={`paytmmp://pay?pa=${upiId}&am=${formattedPrice}&cu=INR`}
+                href={`paytmmp://pay?pa=${upiId}&pn=${exactName}&tn=Marketplace&am=${formattedPrice}&cu=INR`}
                 className="w-full bg-white border border-gray-200 text-sky-600 py-3 px-4 rounded-xl font-bold text-sm shadow-sm hover:bg-sky-50 transition-all text-center flex items-center justify-center gap-2"
               >
                 Pay with Paytm
