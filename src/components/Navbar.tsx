@@ -30,7 +30,7 @@ export default function Navbar() {
           {status === "authenticated" ? (
             <div className="hidden md:flex items-center gap-6 lg:gap-8">
               <Link href="/" className="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">Feed</Link>
-              <Link href="/requests" className="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">ISO Board</Link>
+              <Link href="/requests" className="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">Item Requests</Link>
               <Link href="/profile" className="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">Profile</Link>
               {/* @ts-ignore */}
               {session.user?.role === "ADMIN" && (
@@ -163,7 +163,7 @@ export default function Navbar() {
                 onClick={() => setMenuOpen(false)}
                 className="flex items-center justify-center w-full bg-blue-50 text-blue-700 border border-blue-100 py-3 rounded-2xl font-bold transition-transform"
               >
-                In Search Of (ISO) Board
+                Item Requests
               </Link>
 
               <Link 

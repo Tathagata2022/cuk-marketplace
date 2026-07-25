@@ -65,3 +65,23 @@ export async function deleteItemRequest(requestId: string) {
     return { success: false, error: "Failed to delete request" }
   }
 }
+
+export async function getAllRequestsForAdmin() {
+  const session = await getServerSession(authOptions)
+  if (!session || (session.user as any).role !== "ADMIN") return []
+
+  const requests = await prisma.itemRequest.findMany({
+    orderBy: { createdAt: "desc" },
+    include: { requester: true }
+  })
+  return requests
+}
+
+export async function deleteRequestByAdmin(requestId: string) {
+  const session = await getServerSession(authOptions)
+  if (!session || (session.user as any).role !== "ADMIN") return { success: false, error: "Unauthorized" }
+
+  await prisma.itemRequest.delete({ where: { id: requestId } })
+  revalidatePath("/admin")
+  return { success: true }
+}

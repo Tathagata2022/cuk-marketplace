@@ -17,10 +17,10 @@ export default async function RequestsPage() {
       <Navbar />
 
       <main className="flex-grow max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8 pb-24 md:pb-12">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">"In Search Of" Board</h1>
-            <p className="text-gray-500 font-medium mt-1">See what items students are actively looking for right now.</p>
+            <h1 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">Item Requests</h1>
+            <p className="text-gray-500 mt-2 text-sm sm:text-base">Looking for something specific? Post a request here and let sellers come to you.</p>
           </div>
           <Link 
             href="/requests/new"
