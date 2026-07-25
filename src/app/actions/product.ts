@@ -86,7 +86,7 @@ export async function expressInterest(productId: string) {
   }
 }
 
-export async function payForProduct(productId: string) {
+export async function submitPayment(productId: string, transactionId: string) {
   const session = await getServerSession(authOptions)
   if (!session?.user) return { success: false, error: "Not logged in" }
 
@@ -98,7 +98,8 @@ export async function payForProduct(productId: string) {
       data: {
         productId,
         buyerId: userId,
-        status: "PAID"
+        status: "PAID",
+        transactionId
       }
     })
     return { success: true }

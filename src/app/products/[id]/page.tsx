@@ -1,7 +1,7 @@
 "use client"
 
 import { use, useState, useEffect } from "react"
-import { getProductById, expressInterest, payForProduct, getRelatedProducts } from "../../actions/product"
+import { getProductById, expressInterest, getRelatedProducts } from "../../actions/product"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import Navbar from "@/components/Navbar"
@@ -59,22 +59,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     }
   }
 
-  async function handlePayNow() {
-    if (!session) {
-      alert("Please login to pay")
-      return
-    }
-    setActionLoading(true)
-    try {
-      const res = await payForProduct(resolvedParams.id)
-      if (res.success) setSuccess("PAID")
-    } catch (err) {
-      console.error(err)
-      alert("Payment failed.")
-    } finally {
-      setActionLoading(false)
-    }
-  }
+
 
   if (loading) {
     return (
@@ -238,13 +223,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     >
                       {actionLoading ? "Processing..." : "WISH TO BUY"}
                     </button>
-                    <button
-                      onClick={handlePayNow}
-                      disabled={actionLoading}
-                      className="flex-1 bg-blue-600 text-white py-4 px-6 rounded-2xl font-bold text-base shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all disabled:opacity-50 hover:bg-blue-700 active:scale-[0.98]"
+                    <Link
+                      href={`/checkout/${resolvedParams.id}`}
+                      className="flex-1 bg-blue-600 text-white py-4 px-6 rounded-2xl font-bold text-base shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all hover:bg-blue-700 active:scale-[0.98] text-center"
                     >
-                      {actionLoading ? "Processing..." : "PAY NOW"}
-                    </button>
+                      PAY NOW
+                    </Link>
                   </div>
                 )}
                 {!isOwner && !success && (
