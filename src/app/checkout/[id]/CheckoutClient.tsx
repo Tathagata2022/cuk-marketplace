@@ -67,40 +67,82 @@ export default function CheckoutClient({ product, upiId, upiName }: { product: a
 
       <div className="p-8 grid md:grid-cols-2 gap-12">
         {/* Payment Instructions */}
-        <div className="flex flex-col items-center justify-center bg-gray-50 p-8 rounded-3xl border border-gray-100">
-          <div className="bg-white p-4 rounded-2xl shadow-sm mb-6 border border-gray-100">
-            <QRCodeSVG value={upiString} size={200} level="H" />
-          </div>
+        <div className="flex flex-col items-center justify-center bg-gray-50 p-6 sm:p-8 rounded-[2rem] border border-gray-100 shadow-inner">
           
-          {isMobile && (
-            <div className="w-full flex flex-col gap-3 mb-6">
-              <a 
-                href={`gpay://upi/pay?pa=${upiId}&pn=${exactName}&tn=Marketplace&am=${formattedPrice}&cu=INR`}
-                className="w-full bg-white border border-gray-200 text-gray-800 py-3 px-4 rounded-xl font-bold text-sm shadow-sm hover:bg-gray-50 transition-all text-center flex items-center justify-center gap-2"
-              >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="GPay" className="w-5 h-5" />
-                Pay with GPay
-              </a>
-              <a 
-                href={`phonepe://pay?pa=${upiId}&pn=${exactName}&tn=Marketplace&am=${formattedPrice}&cu=INR`}
-                className="w-full bg-white border border-gray-200 text-purple-700 py-3 px-4 rounded-xl font-bold text-sm shadow-sm hover:bg-purple-50 transition-all text-center flex items-center justify-center gap-2"
-              >
-                Pay with PhonePe
-              </a>
-              <a 
-                href={`paytmmp://pay?pa=${upiId}&pn=${exactName}&tn=Marketplace&am=${formattedPrice}&cu=INR`}
-                className="w-full bg-white border border-gray-200 text-sky-600 py-3 px-4 rounded-xl font-bold text-sm shadow-sm hover:bg-sky-50 transition-all text-center flex items-center justify-center gap-2"
-              >
-                Pay with Paytm
-              </a>
-              <div className="text-center mt-2">
-                <p className="text-xs text-gray-500 font-medium">Or take a screenshot and scan the QR code above.</p>
+          {isMobile ? (
+            <div className="w-full max-w-sm">
+              <div className="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm">
+                <div className="p-4 bg-gray-50/50 border-b border-gray-100 flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                  <h3 className="text-xs font-black text-gray-800 uppercase tracking-widest">Select UPI App</h3>
+                </div>
+                <div className="divide-y divide-gray-100">
+                  {/* GPay */}
+                  <a 
+                    href={`gpay://upi/pay?pa=${upiId}&pn=${exactName}&tn=Marketplace&am=${formattedPrice}&cu=INR`}
+                    className="flex items-center justify-between p-4 hover:bg-gray-50 active:bg-gray-100 transition-colors group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full bg-white border border-gray-100 shadow-sm flex items-center justify-center p-2.5">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="GPay" className="w-full h-full object-contain" />
+                      </div>
+                      <span className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">Google Pay</span>
+                    </div>
+                    <div className="bg-blue-600 text-white text-[11px] font-black px-4 py-2 rounded-full shadow-md shadow-blue-600/20 active:scale-95 transition-transform">PAY</div>
+                  </a>
+
+                  {/* PhonePe */}
+                  <a 
+                    href={`phonepe://pay?pa=${upiId}&pn=${exactName}&tn=Marketplace&am=${formattedPrice}&cu=INR`}
+                    className="flex items-center justify-between p-4 hover:bg-gray-50 active:bg-gray-100 transition-colors group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full bg-white border border-gray-100 shadow-sm flex items-center justify-center p-1.5">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/PhonePe_Logo.svg/1200px-PhonePe_Logo.svg.png" alt="PhonePe" className="w-full h-full object-contain" />
+                      </div>
+                      <span className="font-bold text-gray-900 group-hover:text-purple-600 transition-colors">PhonePe</span>
+                    </div>
+                    <div className="bg-purple-600 text-white text-[11px] font-black px-4 py-2 rounded-full shadow-md shadow-purple-600/20 active:scale-95 transition-transform">PAY</div>
+                  </a>
+
+                  {/* Paytm */}
+                  <a 
+                    href={`paytmmp://pay?pa=${upiId}&pn=${exactName}&tn=Marketplace&am=${formattedPrice}&cu=INR`}
+                    className="flex items-center justify-between p-4 hover:bg-gray-50 active:bg-gray-100 transition-colors group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full bg-white border border-gray-100 shadow-sm flex items-center justify-center p-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Paytm_logo.svg/2560px-Paytm_logo.svg.png" alt="Paytm" className="w-full h-full object-contain" />
+                      </div>
+                      <span className="font-bold text-gray-900 group-hover:text-sky-600 transition-colors">Paytm</span>
+                    </div>
+                    <div className="bg-sky-500 text-white text-[11px] font-black px-4 py-2 rounded-full shadow-md shadow-sky-500/20 active:scale-95 transition-transform">PAY</div>
+                  </a>
+                </div>
+              </div>
+              
+              {/* Fallback QR Code for Mobile */}
+              <div className="mt-8 text-center">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <div className="h-px bg-gray-200 flex-grow"></div>
+                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">OR SCAN QR</span>
+                  <div className="h-px bg-gray-200 flex-grow"></div>
+                </div>
+                <div className="inline-block bg-white p-3 rounded-2xl shadow-sm border border-gray-200 mb-2">
+                  <QRCodeSVG value={upiString} size={140} level="H" />
+                </div>
+                <p className="text-xs text-gray-500 font-medium">Take a screenshot to scan from gallery</p>
               </div>
             </div>
-          )}
-          
-          {!isMobile && (
-            <p className="text-sm font-bold text-gray-500 text-center mb-6">Scan QR code using Google Pay, PhonePe, or Paytm</p>
+          ) : (
+            <>
+              <div className="bg-white p-4 rounded-3xl shadow-sm mb-6 border border-gray-100">
+                <QRCodeSVG value={upiString} size={220} level="H" />
+              </div>
+              <p className="text-sm font-bold text-gray-500 text-center mb-6 max-w-[250px]">
+                Open <span className="text-blue-600">Google Pay</span>, <span className="text-purple-600">PhonePe</span>, or <span className="text-sky-500">Paytm</span> to scan this code
+              </p>
+            </>
           )}
           
           <div className="w-full bg-blue-50 border border-blue-100 p-4 rounded-xl text-center">
