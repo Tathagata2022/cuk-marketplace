@@ -56,41 +56,6 @@ export default function WelcomeGate() {
           </p>
         </div>
       </motion.div>
-
-      {/* Footer Branding for Welcome Page */}
-      <div className="w-full max-w-6xl mx-auto p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-4 mt-auto relative z-10">
-        <a 
-          href="https://iedc-cuk.web.app/" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="flex items-center gap-3 group"
-        >
-          <div className="w-10 h-10 bg-white rounded-xl shadow-sm border border-gray-100 flex items-center justify-center p-2 group-hover:border-blue-200 transition-colors">
-            <img 
-              src="https://iedc-cuk.web.app/iedc_logo.png" 
-              alt="IEDC Logo" 
-              className="w-full h-full object-contain"
-              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-            />
-          </div>
-          <div className="text-left">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Initiated By</p>
-            <p className="text-sm font-black text-gray-900 group-hover:text-blue-600 transition-colors">IEDC CUK</p>
-          </div>
-        </a>
-
-        <a 
-          href="https://www.linkedin.com/in/tathagata-mandal-453863225/" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="flex items-center gap-3 group"
-        >
-          <div className="text-right">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Developed By</p>
-            <p className="text-sm font-black text-gray-900 group-hover:text-emerald-600 transition-colors">Tathagata Mandal</p>
-          </div>
-        </a>
-      </div>
     </div>
   )
 }

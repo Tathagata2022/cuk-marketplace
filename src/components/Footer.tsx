@@ -2,59 +2,51 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useSession } from "next-auth/react"
 
 export default function Footer() {
   const pathname = usePathname()
+  const { status } = useSession()
 
   // Hide footer in admin dashboard to keep it clean
   if (pathname?.startsWith("/admin")) return null
 
+  // Add extra padding at the bottom only if authenticated (because BottomNav shows up)
+  const isAuth = status === "authenticated"
+
   return (
-    <footer className="w-full py-8 px-4 border-t border-gray-100 bg-white/50 backdrop-blur-md pb-24 md:pb-8">
-      <div className="max-w-7xl mx-auto flex flex-col items-center justify-center gap-4 text-center">
+    <footer className={`w-full py-6 px-4 bg-transparent mt-auto ${isAuth ? 'pb-24 md:pb-6' : 'pb-6'}`}>
+      <div className="max-w-7xl mx-auto flex flex-col items-center justify-center gap-2 text-center opacity-70 hover:opacity-100 transition-opacity">
         
-        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
-          {/* IEDC Credit */}
-          <Link 
+        <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-semibold text-gray-500 uppercase tracking-widest">
+          <span>Initiated By</span>
+          <a 
             href="https://iedc-cuk.web.app/" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors group"
+            className="text-blue-600 hover:text-blue-700 hover:underline transition-colors flex items-center gap-1.5"
           >
-            <span className="text-xs font-bold uppercase tracking-widest">Initiated By</span>
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-full border border-gray-100 group-hover:border-blue-200 transition-colors">
-              <img 
-                src="https://iedc-cuk.web.app/iedc_logo.png" 
-                alt="IEDC CUK Logo" 
-                className="w-5 h-5 object-contain"
-                onError={(e) => {
-                  // Fallback if logo fails to load
-                  (e.target as HTMLImageElement).style.display = 'none';
-                }}
-              />
-              <span className="text-sm font-black text-gray-900 group-hover:text-blue-600">IEDC CUK</span>
-            </div>
-          </Link>
-
-          <div className="hidden sm:block w-1 h-1 rounded-full bg-gray-300"></div>
-
-          {/* Developer Credit */}
-          <Link
+            <img 
+              src="https://iedc-cuk.web.app/iedc_logo.png" 
+              alt="IEDC" 
+              className="w-3.5 h-3.5 object-contain mix-blend-multiply"
+              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+            />
+            IEDC CUK
+          </a>
+          
+          <span className="text-gray-300 mx-1">•</span>
+          
+          <span>Developed By</span>
+          <a
             href="https://www.linkedin.com/in/tathagata-mandal-453863225/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-gray-500 hover:text-emerald-600 transition-colors group"
+            className="text-emerald-600 hover:text-emerald-700 hover:underline transition-colors"
           >
-            <span className="text-xs font-bold uppercase tracking-widest">Developed By</span>
-            <span className="text-sm font-black text-gray-900 group-hover:text-emerald-600 px-3 py-1.5 bg-gray-50 rounded-full border border-gray-100 group-hover:border-emerald-200 transition-colors">
-              Tathagata Mandal
-            </span>
-          </Link>
+            Tathagata Mandal
+          </a>
         </div>
-
-        <p className="text-[10px] text-gray-400 font-medium">
-          &copy; {new Date().getFullYear()} Central University of Kerala Marketplace. All rights reserved.
-        </p>
 
       </div>
     </footer>
