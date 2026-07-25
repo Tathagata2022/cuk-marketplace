@@ -17,8 +17,8 @@ export async function createProduct(formData: FormData) {
   const price = parseFloat(formData.get("price") as string)
   const condition = formData.get("condition") as string
   const category = formData.get("category") as string
-  // For the prototype, we will just use a placeholder image if none provided
-  const images = (formData.get("imageUrl") as string) || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80"
+  // If no image is provided, store an empty array string so the frontend uses the default placeholder
+  const images = (formData.get("imageUrl") as string) || "[]"
   
   const product = await prisma.product.create({
     data: {
