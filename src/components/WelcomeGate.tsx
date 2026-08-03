@@ -25,9 +25,21 @@ export default function WelcomeGate() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}
-            className="w-20 h-20 sm:w-24 sm:h-24 mx-auto bg-blue-50 border border-blue-100 shadow-sm rounded-3xl flex items-center justify-center mb-8 rotate-3"
+            className="w-28 h-28 sm:w-36 sm:h-36 mx-auto mb-6 sm:mb-8"
           >
-            <span className="text-4xl sm:text-5xl">🎓</span>
+            <img 
+              src="/logo.png" 
+              alt="CUK Marketplace Logo" 
+              className="w-full h-full object-cover rounded-full shadow-lg"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                e.currentTarget.nextElementSibling?.classList.remove('hidden');
+              }}
+            />
+            {/* Fallback */}
+            <div className="hidden w-full h-full bg-blue-50 border border-blue-100 shadow-sm rounded-[2.5rem] flex items-center justify-center rotate-3">
+              <span className="text-5xl sm:text-6xl">🎓</span>
+            </div>
           </motion.div>
 
           <h1 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight mb-4">

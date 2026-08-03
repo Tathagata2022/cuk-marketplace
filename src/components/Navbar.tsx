@@ -21,7 +21,7 @@ export default function Navbar() {
               <img 
                 src="/logo.png" 
                 alt="CUK Marketplace Logo" 
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-contain transform group-hover:scale-105 transition-all shadow-sm"
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover transform group-hover:scale-105 transition-all shadow-sm"
                 onError={() => setLogoError(true)}
               />
             ) : (
