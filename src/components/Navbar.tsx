@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion"
 export default function Navbar() {
   const { data: session, status } = useSession()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [logoError, setLogoError] = useState(false)
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-sm transition-all duration-300">
@@ -16,13 +17,22 @@ export default function Navbar() {
           
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-xl flex items-center justify-center transform group-hover:scale-105 transition-all shadow-md shadow-blue-600/20">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
+            {!logoError ? (
+              <img 
+                src="/logo.png" 
+                alt="CUK Marketplace Logo" 
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-contain transform group-hover:scale-105 transition-all shadow-sm"
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-xl flex items-center justify-center transform group-hover:scale-105 transition-all shadow-md shadow-blue-600/20">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+            )}
             <span className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight group-hover:text-blue-600 transition-colors">
-              CUK Marketplace
+              Marketplace
             </span>
           </Link>
 
