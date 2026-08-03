@@ -22,7 +22,7 @@ export default function Navbar() {
                 <img 
                   src="/logo.png" 
                   alt="CUK Marketplace Logo" 
-                  className="w-full h-full object-cover scale-[1.10] transform group-hover:scale-[1.18] transition-all"
+                  className="w-full h-full object-cover transform group-hover:scale-[1.10] transition-all"
                   onError={() => setLogoError(true)}
                 />
               </div>

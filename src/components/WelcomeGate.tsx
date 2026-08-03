@@ -30,7 +30,7 @@ export default function WelcomeGate() {
             <img 
               src="/logo.png" 
               alt="CUK Marketplace Logo" 
-              className="w-full h-full object-cover scale-[1.10]"
+              className="w-full h-full object-cover"
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
                 e.currentTarget.nextElementSibling?.classList.remove('hidden');
