@@ -18,12 +18,14 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
             {!logoError ? (
-              <img 
-                src="/logo.png" 
-                alt="CUK Marketplace Logo" 
-                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover transform group-hover:scale-105 transition-all shadow-sm"
-                onError={() => setLogoError(true)}
-              />
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden shadow-sm border border-gray-100/50 flex items-center justify-center bg-white">
+                <img 
+                  src="/logo.png" 
+                  alt="CUK Marketplace Logo" 
+                  className="w-full h-full object-cover scale-[1.10] transform group-hover:scale-[1.18] transition-all"
+                  onError={() => setLogoError(true)}
+                />
+              </div>
             ) : (
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-xl flex items-center justify-center transform group-hover:scale-105 transition-all shadow-md shadow-blue-600/20">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
