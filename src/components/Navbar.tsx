@@ -20,9 +20,9 @@ export default function Navbar() {
             {!logoError ? (
               <div className="flex items-center gap-2">
                 <img 
-                  src="/logo_transparent.webp" 
+                  src="/logo.webp" 
                   alt="CUK Marketplace Logo" 
-                  className="h-10 w-auto object-contain drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]"
+                  className="h-10 w-auto object-contain invert mix-blend-multiply"
                   onError={() => setLogoError(true)}
                 />
               </div>
