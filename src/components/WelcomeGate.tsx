@@ -28,7 +28,7 @@ export default function WelcomeGate() {
             className="w-28 h-28 sm:w-36 sm:h-36 mx-auto mb-6 sm:mb-8 rounded-full overflow-hidden shadow-xl border-4 border-white bg-white"
           >
             <img 
-              src="/logo.png" 
+              src="/logo.webp" 
               alt="CUK Marketplace Logo" 
               className="w-full h-full object-cover"
               onError={(e) => {

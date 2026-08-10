@@ -18,11 +18,11 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
             {!logoError ? (
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden shadow-sm border border-gray-100/50 flex items-center justify-center bg-white">
+              <div className="flex items-center gap-2">
                 <img 
-                  src="/logo.png" 
+                  src="/logo.webp" 
                   alt="CUK Marketplace Logo" 
-                  className="w-full h-full object-cover transform group-hover:scale-[1.10] transition-all"
+                  className="h-10 w-auto object-contain"
                   onError={() => setLogoError(true)}
                 />
               </div>
