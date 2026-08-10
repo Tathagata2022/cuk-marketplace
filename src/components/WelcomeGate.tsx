@@ -28,9 +28,9 @@ export default function WelcomeGate() {
             className="w-28 h-28 sm:w-36 sm:h-36 mx-auto mb-6 sm:mb-8 rounded-full overflow-hidden shadow-xl border-4 border-white bg-white"
           >
             <img 
-              src="/logo.webp" 
+              src="/logo_transparent.webp" 
               alt="CUK Marketplace Logo" 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
                 e.currentTarget.nextElementSibling?.classList.remove('hidden');
