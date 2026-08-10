@@ -25,12 +25,12 @@ export default function WelcomeGate() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}
-            className="w-28 h-28 sm:w-36 sm:h-36 mx-auto mb-6 sm:mb-8 rounded-full overflow-hidden shadow-xl border-4 border-white bg-white"
+            className="w-28 h-28 sm:w-36 sm:h-36 mx-auto mb-6 sm:mb-8 rounded-full shadow-xl border-4 border-white bg-white flex items-center justify-center p-4"
           >
             <img 
               src="/logo_transparent.webp" 
               alt="CUK Marketplace Logo" 
-              className="w-full h-full object-cover drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+              className="w-full h-full object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
                 e.currentTarget.nextElementSibling?.classList.remove('hidden');
